@@ -562,7 +562,8 @@ public class Utility {
             } catch (Exception e) {
                 ;
             }
-            if(worker!=null) {
+            if(worker!=null)
+            {
                 worker.isRunning = false;
                 try {
                     worker.join(100);

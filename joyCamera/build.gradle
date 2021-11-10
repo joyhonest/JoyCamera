@@ -64,3 +64,5 @@ dependencies {
 
 //git commit -m "xxx" -a
 //git push -u origin main
+//git push origin --delete <tagname>
+//删除远端tag
