@@ -562,7 +562,17 @@ public class Utility {
             } catch (Exception e) {
                 ;
             }
-            worker.isRunning = false;
+            if(worker!=null) {
+                worker.isRunning = false;
+                try {
+                    worker.join(100);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                worker=null;
+            }
             mediaMuxer = null;
             bCanStartWrite = false;
             if (bGAudio) {
