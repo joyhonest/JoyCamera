@@ -12,13 +12,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 
-import com.joyhonest.joycamera.sdk.*;
+
+import com.joyhonest.joycamera.sdk.JoyFile;
+import com.joyhonest.joycamera.sdk.JoyGetFiles;
+import com.joyhonest.joycamera.sdk.jh_dowload_callback;
+import com.joyhonest.joycamera.sdk.wifiCamera;
 import com.joyhonest.joycamera_sdk.databinding.ActivityMainBinding;
 
 import org.simple.eventbus.*;
 
 import java.io.File;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     // Used to load the 'joycamera' library on application startup.
@@ -131,37 +136,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(binding.ReadList == v)
         {
-            File file = getExternalFilesDir("JoyCamera_Test");
-            String sLocalPath = file.getAbsolutePath();
-            sLocalPath = sLocalPath+"/abc123.mp4";
+//            File file = getExternalFilesDir("JoyCamera_Test");
+//            String sLocalPath = file.getAbsolutePath();
+//            sLocalPath = sLocalPath+"/abc123.mp4";
             //sLocalPath = sLocalPath+"/abc.jpg";
 
 
 
 
-            wifiCamera.naStartRecord(sLocalPath,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_SNADBOX,true);
 
-/*            wifiCamera.naSnapPhoto(sLocalPath,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_SNADBOX);
+//            wifiCamera.naStartRecord(sLocalPath,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_SNADBOX,true);
+
+//            wifiCamera.naSnapPhoto(sLocalPath,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_SNADBOX);
+
             if(nMode ==1)
             {
-                //wifiCamera.naGetSdFliesList(1,0,20);
-                File file = getExternalFilesDir("JoyCamera_Test");
-                String sLocalPath = file.getAbsolutePath();
-                sLocalPath = sLocalPath+"abc.mov";
-                //wifiCamera.naStartDonwPlay("MOVI0001.mov",2084352);
-                wifiCamera.naStartDonwLoad("MOVI0001.mov",2084352,sLocalPath);
+                wifiCamera.naGetSdFliesList(1,0,20);
+//                File file = getExternalFilesDir("JoyCamera_Test");
+//                String sLocalPath = file.getAbsolutePath();
+//                sLocalPath = sLocalPath+"abc.mov";
+//                //wifiCamera.naStartDonwPlay("MOVI0000.mov",4547584);
+//                wifiCamera.naStartDonwLoad("MOVI0000.mov",4547584,sLocalPath);
             }
 
- */
+
             //wifiCamera.naSetRecordWH(640/2,360/2);
-            wifiCamera.naStartAutoFocus(true);
+            //wifiCamera.naStartAutoFocus(true);
         }
         if( binding.Mode == v)
         {
-            wifiCamera.naSetRecordWH(640/2,480/2);
-//            nMode = nMode!=0?0:1;
-//            wifiCamera.naSetDeviceMode(nMode);
-//            binding.Mode.setText("Mode"+nMode);
+            //wifiCamera.naSetRecordWH(640/2,480/2);
+            nMode = nMode!=0?0:1;
+            wifiCamera.naSetDeviceMode(nMode);
+            binding.Mode.setText("Mode"+nMode);
         }
         if(v == binding.Start)
         {
@@ -263,10 +270,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Subscriber(tag = "onGetSdFliesList")
-    private  void  onGetSdFliesList(GP4225_Device.GetFiles fileslist)
+    private  void  onGetSdFliesList(JoyGetFiles fileslist)
     {
-        List<GP4225_Device.JoyFile> files = fileslist.files;
-        for(GP4225_Device.JoyFile file :files)
+        List<JoyFile> files = fileslist.files;
+        for(JoyFile file :files)
         {
             Log.e(TAG,"file name = "+file.sFileName +" len = "+file.nLength);
         }
