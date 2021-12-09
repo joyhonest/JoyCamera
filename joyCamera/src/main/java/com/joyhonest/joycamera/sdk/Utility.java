@@ -8,11 +8,15 @@ import android.media.MediaFormat;
 import org.simple.eventbus.EventBus;
 
 import java.nio.ByteBuffer;
+import java.util.Locale;
 
 public class Utility {
 
     private static final String TAG = "Utility";
     static ByteBuffer mDirectBuffer;
+
+
+
 
     private static int InitVideoMediacode(int width, int height, int bitrate, int fps1)
     {
@@ -28,6 +32,9 @@ public class Utility {
     private static void VidoeDataEncoder(byte[] data) {
         JoyAudioRecord.VidoeDataEncoder(data);
     }
+
+
+
 
 
     //下载文件回调 nError =1 表示有错误。
@@ -70,8 +77,7 @@ public class Utility {
     //录像有JAVA 调用此函数
     static void OnSnaporRecrodOK(String sName, int nPhoto) {
         if(sName!=null) {
-
-            String Sn = String.format("%02d%s", nPhoto, sName);
+            String Sn = String.format(Locale.ENGLISH,"%02d%s", nPhoto, sName);
             JoyLog.e(TAG,Sn);
             EventBus.getDefault().post(Sn, "SavePhotoOK");
         }
@@ -88,9 +94,25 @@ public class Utility {
         //#define  SD_Photo               0x10
     }
 
+    private static void OnPlayStatus(int n)
+    {
+        //n !=0  Play is Start  0= Play is over
+        Integer i = n;
+        EventBus.getDefault().post(i,"OnPlayStatus");
+
+    }
+
+    private static void SentPlayDuration(long n)  //返回播放文件总时长
+    {
+        Integer nn = (int)n;
+        EventBus.getDefault().post(nn, "onDuration");
+    }
 
 
-
-
+    private static void SentPlayTime(long n)
+    {
+        Integer nn = (int)n;
+        EventBus.getDefault().post(nn, "onPlaytime");
+    }
 
 }

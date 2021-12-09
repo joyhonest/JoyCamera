@@ -2,6 +2,8 @@ package com.joyhonest.joycamera.sdk;
 
 
 
+import android.util.Log;
+
 import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -62,6 +64,10 @@ class JoyProcessData {
                 if (data.length >= 35) {
                     GP4225_Device.nFuncMask = data[34] & 0xFF;
                 }
+//                if(data.length>=36)
+//                {
+//                    Log.e("TAG","trmode = "+data[35]);
+//                }
 
                 if (data.length >= 40) {
                     GP4225_Device.nSDRecordTime = (data[36] & 0xFF) | (data[37] & 0xFF) * 0x100 | (data[38] & 0xFF) * 0x10000 | (data[39] & 0xFF) * 0x1000000;
@@ -300,10 +306,10 @@ class JoyProcessData {
                         byte[] da = new byte[4];
                         System.arraycopy(data, 10, da, 0, 4);
                         EventBus.getDefault().post(da, "GP4225_GetKey");
+                        EventBus.getDefault().post(da, "onGetKey_new");
                     } else {
                         bOK = false;
                     }
-
                     break;
                 case 0x0019: //雷达数据发送(设备发起或应答)
                     if (n_len != 0x000D) {

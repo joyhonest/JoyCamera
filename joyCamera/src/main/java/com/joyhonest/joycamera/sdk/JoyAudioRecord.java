@@ -13,6 +13,7 @@ import org.simple.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Locale;
 
 class JoyAudioRecord {
 
@@ -155,12 +156,20 @@ class JoyAudioRecord {
         if (bRecording)
             return -2;
         bCanStartWrite = false;
-        if (nType == wifiCamera.TYPE_ONLY_PHONE || nType == wifiCamera.TYPE_BOTH_PHONE_SD) {
+        if (nType == wifiCamera.TYPE_ONLY_PHONE || nType == wifiCamera.TYPE_BOTH_PHONE_SD)
+        {
             nRecDes = dest;
             StartRecord_A(pFileName, bRecordAudio);
             Utility.naStartRecordV(nType, dest);
             bRecording = true;
         }
+        if(nType == wifiCamera.TYPE_ONLY_SD)
+        {
+            nRecDes = dest;
+            StartRecord_A(pFileName, bRecordAudio);
+            Utility.naStartRecordV(nType, dest);
+        }
+
         return 0;
     }
 
@@ -266,9 +275,11 @@ class JoyAudioRecord {
                 audioRecord = null;
             }
 
-            worker.isRunning = false;
-            SystemClock.sleep(50);
-            worker = null;
+            if(worker!=null) {
+                worker.isRunning = false;
+                SystemClock.sleep(50);
+                worker = null;
+            }
         }
     }
 
@@ -472,7 +483,15 @@ class JoyAudioRecord {
 
 
     public static int StopRecord(int nType) {
+        if(nType == wifiCamera.TYPE_ONLY_SD)
+        {
+            Utility.naStopRecordV(wifiCamera.TYPE_ONLY_SD);
+        }
         if (nType == wifiCamera.TYPE_BOTH_PHONE_SD || nType == wifiCamera.TYPE_ONLY_PHONE) {
+            if(nType == wifiCamera.TYPE_BOTH_PHONE_SD)
+            {
+                Utility.naStopRecordV(wifiCamera.TYPE_BOTH_PHONE_SD);
+            }
             bRecording = false;
             JoyLog.e(TAG, "Count = " + nCountFrame);
             Utility.naStopRecordV(nType);
@@ -490,8 +509,9 @@ class JoyAudioRecord {
                 re = true;
                 if (oldFile.exists() && oldFile.isFile()) {
                     re = oldFile.renameTo(newFile);
-                    String Sn = String.format("%02d%s", 1, GP4225_Device.sRecordFileName);
-                    re = false;
+                    String Sn = String.format(Locale.ENGLISH,"%02d%s", 1, GP4225_Device.sRecordFileName);
+                    JoyLog.e(TAG,Sn);
+                    EventBus.getDefault().post(Sn, "SavePhotoOK");
                 }
                 Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);
                 GP4225_Device.sRecordFileName = null;

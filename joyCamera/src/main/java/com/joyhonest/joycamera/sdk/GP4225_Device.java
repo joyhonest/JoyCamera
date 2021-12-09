@@ -32,6 +32,7 @@ public class GP4225_Device {
     static String sRecordFileName=null;
 
 
+
     static boolean GP4225_PressData(byte[] data)
     {
         return JoyProcessData.PressData(data);
