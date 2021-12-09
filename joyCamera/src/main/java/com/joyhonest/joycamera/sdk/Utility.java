@@ -50,7 +50,6 @@ public class Utility {
     }
 
     private static Bitmap bmp = null;
-
     private static void onGetFrame(int w, int h) {
         if (bmp == null)
             bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
