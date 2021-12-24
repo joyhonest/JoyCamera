@@ -1,10 +1,31 @@
 package com.joyhonest.joycamera.sdk;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class wifiCamera {
+
+
+    public static String sAlbum;
+    public static String sLocalPath;
 
     private static String sAlbumName = "JOY_Camera";
 
@@ -34,6 +55,16 @@ public class wifiCamera {
     private static String sRecordFilename = "";
     private static String sSnapFilename = "";
 
+    public static  void naSetApplicationContext(Context context)
+    {
+        applicationContext = context.getApplicationContext();
+    }
+
+    static Context   getApplicationContext()
+    {
+        return applicationContext;
+    }
+
     private static final String  TAG = "wifiCamera";
     static {
         System.loadLibrary("joycamera");
@@ -43,15 +74,6 @@ public class wifiCamera {
         //Utility.gp4225_Device = new GP4225_Device();
     }
 
-    /*
-     * 以下这些是JoyCameraView 使用
-     * 普通用户无需直接调用
-     */
-
-    public static  void naSetApplicationContext(Context context)
-    {
-        applicationContext = context.getApplicationContext();
-    }
 
 
     //public  static  native  void StartRecordAudio(boolean b);
@@ -110,17 +132,59 @@ public class wifiCamera {
     //设定是否检测 图传协议，有些固件支持 同一个固件 用不同的图传协议
     //但因为要判定协议，Open摄像头时。多需要100ms ,需要在 naInit之前调用它
     public static native  int naSetCheckTransferProtocol(boolean b);
-
-
-
-    public static native int naSnapPhoto(String sPath, int nType ,int dest);
-    //录像
-    public static  int naStartRecord(String sFileName1, int nType ,int dest,boolean bRecordAudio)
+    private static native int naSnapPhotoA(String sPath, int nType ,int dest);
+    static  int photoType = -1;
+    static  int photodest = -1;
+    static  int videoType = -1;
+    static  int videodest = -1;
+    public static  int naSnapPhoto(String sPath, int nType ,int dest)
     {
+        photoType = nType;
+        photodest = dest;
+        if(photodest== TYPE_DEST_GALLERY)
+        {
+            String strna = Utility.getFileNameFromDate(false);
+            if(sPath !=null)
+            {
+                strna = sPath.substring(sPath.lastIndexOf("/") + 1);
+                strna = sLocalPath+"/"+strna;
+            }
+            return naSnapPhotoA(strna, nType, dest);
+        }
+        else {
+            return naSnapPhotoA(sPath, nType, dest);
+        }
+    }
+
+    //录像
+    public static  int naStartRecord(String sFileName2, int nType ,int dest,boolean bRecordAudio)
+    {
+        String sFileName1 = sFileName2;
         String  sFileName = sFileName1+"_.tmp";
-        int  re =   GP4225_Device.StartRecord(sFileName, nType ,dest,bRecordAudio);
+
+        videoType = nType;
+        videodest = dest;
+
+        int  re = -1;
+
+        if(videodest== TYPE_DEST_GALLERY)
+        {
+            String strna = Utility.getFileNameFromDate(true);
+            sFileName1 = strna;
+            if(sFileName2 !=null)
+            {
+                strna = sFileName2.substring(sFileName2.lastIndexOf("/") + 1);
+                strna = sLocalPath+"/"+strna;
+            }
+            strna = strna+"_.tmp";
+            re =   GP4225_Device.StartRecord(strna, nType ,dest,bRecordAudio);
+        }
+        else {
+            re =   GP4225_Device.StartRecord(sFileName, nType ,dest,bRecordAudio);
+        }
         if(re == 0)
         {
+
             GP4225_Device.sRecordFileName = sFileName1;
         }
         return  re;
@@ -259,5 +323,15 @@ public class wifiCamera {
 
     public static native int naGetAdjFocusValue();
     public static native int naSetAdjFocusValue(int nValue);
+
+    ///
+
+    public static void naCreateLocalDir(String sDir)
+    {
+        Utility.F_CreateLocalDir(sDir);
+    }
+
+
+
 
 }

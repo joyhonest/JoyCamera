@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        wifiCamera.naSetApplicationContext(this);
+        wifiCamera.naCreateLocalDir("JoyDemo"); //
+
         Window window =getWindow();
         window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -145,9 +148,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-//            wifiCamera.naStartRecord(sLocalPath,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_SNADBOX,true);
+            //wifiCamera.naStartRecord(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY,false);
 
-//            wifiCamera.naSnapPhoto(sLocalPath,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_SNADBOX);
+           // wifiCamera.naSnapPhoto(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY);
 
             if(nMode ==1)
             {
@@ -165,7 +168,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if( binding.Mode == v)
         {
-            //wifiCamera.naSetRecordWH(640/2,480/2);
+            //wifiCamera.naStopRecordAll();
+
+            wifiCamera.naSetRecordWH(640/2,480/2);
             nMode = nMode!=0?0:1;
             wifiCamera.naSetDeviceMode(nMode);
             binding.Mode.setText("Mode"+nMode);
@@ -178,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(v== binding.Stop)
         {
+
             wifiCamera.naStop();
         }
         if(v==binding.Flip)

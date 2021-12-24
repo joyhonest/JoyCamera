@@ -106,7 +106,6 @@ class JoyAudioRecord {
         //描述视频格式的帧速率（以帧/秒为单位）的键。
         mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, fps);//帧率，一般在15至30之内，太小容易造成视频卡顿。
         mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, color);//色彩格式，具体查看相关API，不同设备支持的色彩格式不尽相同
-
         try {
             videoMediaCode.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
         } catch (Exception e) {
@@ -114,7 +113,6 @@ class JoyAudioRecord {
             mediaFormat = null;
         }
         return mediaFormat;
-
     }
 
     static int InitVideo(int width, int height, int bitrate, int fps1) {
@@ -509,9 +507,7 @@ class JoyAudioRecord {
                 re = true;
                 if (oldFile.exists() && oldFile.isFile()) {
                     re = oldFile.renameTo(newFile);
-                    String Sn = String.format(Locale.ENGLISH,"%02d%s", 1, GP4225_Device.sRecordFileName);
-                    JoyLog.e(TAG,Sn);
-                    EventBus.getDefault().post(Sn, "SavePhotoOK");
+                    Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);
                 }
                 Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);
                 GP4225_Device.sRecordFileName = null;
