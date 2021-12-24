@@ -1,33 +1,19 @@
 package com.joyhonest.joycamera.sdk;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
+
 import android.content.Context;
-import android.database.Cursor;
+
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
+
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class wifiCamera {
 
 
     public static String sAlbum;
     public static String sLocalPath;
-
-    private static String sAlbumName = "JOY_Camera";
 
     private static Context applicationContext = null;
 
@@ -38,22 +24,17 @@ public class wifiCamera {
     public static final int TYPE_DEST_SNADBOX = 0;
     public static final int TYPE_DEST_GALLERY = 1;
 
-
     public static final int TYPE_VIDEO = 1;
     public static final int TYPE_PHOTO = 3;
-
 
 
     public static  final int  CAMERA_NORMAL_MODE = 0;
     public static  final int  CAMERA_FILELIST_MODE = 1;
 
+
     private static final int BMP_Len = (((4096 + 3) / 4) * 4) * 4 * 3072 + 2048;
     private  final  static int CmdLen = 2048;
     //private  static boolean  bProgressGP4225UDP=true;
-
-
-    private static String sRecordFilename = "";
-    private static String sSnapFilename = "";
 
     public static  void naSetApplicationContext(Context context)
     {
@@ -66,6 +47,7 @@ public class wifiCamera {
     }
 
     private static final String  TAG = "wifiCamera";
+
     static {
         System.loadLibrary("joycamera");
         Utility.mDirectBuffer = ByteBuffer.allocateDirect(BMP_Len + CmdLen);     //获取每帧数据，主要根据实际情况，分配足够的空间。
@@ -122,10 +104,6 @@ public class wifiCamera {
     public static native void naSetEnableRotate(boolean b); //视频是否可以旋转任意角度。 如果调用naEnableSensor，会从naEnableSensor 内部调用次函数
     public static native void naSetFilterRotate(float nAngle); //一般用户无需调用
     public static native void naSetEnableEQ(boolean b);
-    public static  void naSetAlbumName(String sAlbumName_)
-    {
-        sAlbumName = sAlbumName_;
-    }
 
     public static native int naSetRecordWH(int ww, int hh);
 
@@ -326,6 +304,7 @@ public class wifiCamera {
 
     ///
 
+    //建立相册目录，Android10 以下要注意权限 "sDir" 也是相册名称
     public static void naCreateLocalDir(String sDir)
     {
         Utility.F_CreateLocalDir(sDir);

@@ -1,10 +1,8 @@
 package com.joyhonest.joycamera.sdk;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.opengl.GLES20;
+
 import android.opengl.GLSurfaceView;
-import android.opengl.Matrix;
 import android.util.AttributeSet;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -13,7 +11,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class JoyCameraView extends GLSurfaceView implements GLSurfaceView.Renderer {
     public JoyCameraView(Context context_) {
         super(context_);
-        init(context_);
+        init();
     }
 
     /**
@@ -22,10 +20,10 @@ public class JoyCameraView extends GLSurfaceView implements GLSurfaceView.Render
      */
     public JoyCameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
-    private void init(Context context)
+    private void init()
     {
         setEGLContextClientVersion(2);
         setRenderer(this);

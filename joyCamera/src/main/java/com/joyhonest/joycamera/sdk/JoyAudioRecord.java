@@ -1,4 +1,7 @@
 package com.joyhonest.joycamera.sdk;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaCodec;
@@ -8,12 +11,13 @@ import android.media.MediaMuxer;
 import android.media.MediaRecorder;
 import android.os.SystemClock;
 
-import org.simple.eventbus.EventBus;
+
+import androidx.core.app.ActivityCompat;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Locale;
+
 
 class JoyAudioRecord {
 
@@ -25,7 +29,7 @@ class JoyAudioRecord {
     private static final int CHANNEL_MODE = AudioFormat.CHANNEL_IN_MONO;
 
 
-    public  static int BUFFFER_SIZE = (2048 * KEY_CHANNEL_COUNT);
+    public static int BUFFFER_SIZE = (2048 * KEY_CHANNEL_COUNT);
 
     private static final int nCt = (BUFFFER_SIZE * 1000000) / (KEY_SAMPLE_RATE * 2 * KEY_CHANNEL_COUNT);
 
@@ -33,7 +37,6 @@ class JoyAudioRecord {
 
 
     private static final String TAG = "JoyAudioRecord";
-
 
 
     private static boolean bGAudio = false;
@@ -45,24 +48,16 @@ class JoyAudioRecord {
     private static MediaCodec audioMediaCode = null;
     public static long pts = 0;
     private static long pts_a = 0;
-    private static long pts_a_ = 0;
     private static long pts_ = 0;
     private static long nCountFrame = 0;
     private static long nCountFrameAudio = 0;
     private static int vIndex = -1;
     private static int aIndex = -1;
 
-    private static int nRecDes = wifiCamera.TYPE_DEST_SNADBOX;
-
     public static byte[] mBuffer;
     private static Worker worker = null;
 
     private static boolean bCanStartWrite = false;
-
-
-
-
-
 
 
     private static MediaFormat F_GetMediaFormat(int width, int height, int bitrate, int fps_, int color) {
@@ -135,9 +130,6 @@ class JoyAudioRecord {
     }
 
 
-
-
-
     static long getRecordTimems() {
         if (!bRecording) {
             return 0;
@@ -154,16 +146,15 @@ class JoyAudioRecord {
         if (bRecording)
             return -2;
         bCanStartWrite = false;
-        if (nType == wifiCamera.TYPE_ONLY_PHONE || nType == wifiCamera.TYPE_BOTH_PHONE_SD)
-        {
-            nRecDes = dest;
+        //int nRecDes = wifiCamera.TYPE_DEST_SNADBOX;
+        if (nType == wifiCamera.TYPE_ONLY_PHONE || nType == wifiCamera.TYPE_BOTH_PHONE_SD) {
+            //nRecDes = dest;
             StartRecord_A(pFileName, bRecordAudio);
             Utility.naStartRecordV(nType, dest);
             bRecording = true;
         }
-        if(nType == wifiCamera.TYPE_ONLY_SD)
-        {
-            nRecDes = dest;
+        if (nType == wifiCamera.TYPE_ONLY_SD) {
+            //nRecDes = dest;
             StartRecord_A(pFileName, bRecordAudio);
             Utility.naStartRecordV(nType, dest);
         }
@@ -193,8 +184,8 @@ class JoyAudioRecord {
                     mediaMuxer.release();
                     mediaMuxer = null;
                 }
-            } catch (Exception e) {
-                ;
+            } catch (Exception ignored) {
+
             }
 
         }
@@ -202,8 +193,8 @@ class JoyAudioRecord {
             mediaMuxer = new MediaMuxer(sfliename, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
 
             bMuxerStart = false;
-        } catch (Exception e) {
-            ;
+        } catch (Exception ignored) {
+
         }
         if (bGAudio) {
             if (!isCanRecordAudio()) {
@@ -225,11 +216,10 @@ class JoyAudioRecord {
             }
             StartRecordAudio(true);
             int nn = 0;
-            while(aIndex<0)
-            {
+            while (aIndex < 0) {
                 SystemClock.sleep(10);
                 nn++;
-                if(nn>50)
+                if (nn > 50)
                     break;
             }
         } else {
@@ -250,16 +240,33 @@ class JoyAudioRecord {
             int minBufferSize = AudioRecord.getMinBufferSize(KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT);
             BUFFFER_SIZE = Math.max(BUFFFER_SIZE, minBufferSize);
             mBuffer = new byte[BUFFFER_SIZE];
-
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT, BUFFFER_SIZE);
-            audioRecord.startRecording();
+            if(wifiCamera.getApplicationContext()!=null)
             {
-                if (worker != null && worker.isRunning) {
-                    worker.isRunning = false;
-                    SystemClock.sleep(20);
+                if (ActivityCompat.checkSelfPermission(wifiCamera.getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+                    audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT, BUFFFER_SIZE);
+                    audioRecord.startRecording();
+                    {
+                        if (worker != null && worker.isRunning) {
+                            worker.isRunning = false;
+                            SystemClock.sleep(20);
+                        }
+                        worker = new Worker();
+                        worker.start();
+                    }
                 }
-                worker = new Worker();
-                worker.start();
+            }
+            else {
+                audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT, BUFFFER_SIZE);
+                audioRecord.startRecording();
+                {
+                    if (worker != null && worker.isRunning) {
+                        worker.isRunning = false;
+                        SystemClock.sleep(20);
+                    }
+                    worker = new Worker();
+                    worker.start();
+                }
             }
 
         } else {
@@ -267,13 +274,13 @@ class JoyAudioRecord {
                 try {
                     audioRecord.stop();
                     audioRecord.release();
-                } catch (Exception e) {
-                    ;
+                } catch (Exception ignored) {
+
                 }
                 audioRecord = null;
             }
 
-            if(worker!=null) {
+            if (worker != null) {
                 worker.isRunning = false;
                 SystemClock.sleep(50);
                 worker = null;
@@ -286,14 +293,22 @@ class JoyAudioRecord {
         boolean re = false;
         try {
             int minBufferSize = AudioRecord.getMinBufferSize(KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT) * 2;
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT, minBufferSize);
-            audioRecord.startRecording();
-            audioRecord.stop();
-            audioRecord.release();
-            audioRecord = null;
-            re = true;
-        } catch (Exception e) {
-            ;
+            if(wifiCamera.getApplicationContext()!=null)
+            {
+                if (ActivityCompat.checkSelfPermission(wifiCamera.getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    return true;
+                }
+            }
+            else {
+                audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT, minBufferSize);
+                audioRecord.startRecording();
+                audioRecord.stop();
+                audioRecord.release();
+                audioRecord = null;
+                re = true;
+            }
+        } catch (Exception ignored) {
+
         }
         return re;
     }
@@ -311,17 +326,14 @@ class JoyAudioRecord {
 
         if (!bCanStartWrite)
             return;
-        int re = -1;
         if (bVideo) {
             if (vIndex >= 0) {
                 if ((bufferInfo.flags & MediaCodec.BUFFER_FLAG_CODEC_CONFIG) == 0)  //控制 sps pps 已经在 addtrack中format种添加进去了。
                 {
                     try {
-                        long ta = (nCountFrame*1000000) / fps;
-                        bufferInfo.presentationTimeUs = ta;
+                        bufferInfo.presentationTimeUs = (nCountFrame*1000000) / fps;
                         mediaMuxer.writeSampleData(vIndex, byteBuf, bufferInfo);
                         nCountFrame++;
-                        re = 0;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -331,12 +343,10 @@ class JoyAudioRecord {
             if (aIndex >= 0 ) {
                 try {
                     if (bufferInfo.size > 10) {
-                        long ta = nCountFrameAudio * nCt;
-                        bufferInfo.presentationTimeUs = ta;
+                        bufferInfo.presentationTimeUs = nCountFrameAudio * nCt;
                         mediaMuxer.writeSampleData(aIndex, byteBuf, bufferInfo);
                         nCountFrameAudio++;
                     }
-                    re = 0;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -405,19 +415,12 @@ class JoyAudioRecord {
             int outputBufferIndex = videoMediaCode.dequeueOutputBuffer(bufferInfo, 10000);//拿到输出缓冲区的索引  10ms
             if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                 MediaFormat newFormat = videoMediaCode.getOutputFormat();
-//                ByteBuffer csd0 =  newFormat.getByteBuffer("csd-0");
-//                ByteBuffer csd1 =  newFormat.getByteBuffer("csd-1");
-                //vIndex = mediaMuxer.addTrack(newFormat);
+
                 Addtrack(newFormat, true);
             }
             if (outputBufferIndex >= 0) {
                 ByteBuffer outputBuffer = videoMediaCode.getOutputBuffer(outputBufferIndex);
                 {
-//                    if(vIndex<0)
-//                    {
-//                        MediaFormat newFormat = videoMediaCode.getOutputFormat();
-//                        Addtrack(newFormat,true);
-//                    }
                     if (vIndex >= 0) {
                         try {
                             writeSampleData(true, outputBuffer, bufferInfo);
@@ -428,8 +431,6 @@ class JoyAudioRecord {
                     }
                 }
                 videoMediaCode.releaseOutputBuffer(outputBufferIndex, false);
-                //bufferInfo = new MediaCodec.BufferInfo();
-                // outputBufferIndex = videoMediaCode.dequeueOutputBuffer(bufferInfo, 10000);//拿到输出缓冲区的索引  10ms
             }
         }
     }
@@ -442,7 +443,7 @@ class JoyAudioRecord {
             return;
         int inputBufferIndex = audioMediaCode.dequeueInputBuffer(5000);
         if (inputBufferIndex >= 0) {//当输入缓冲区有效时,就是>=0
-            pts_a_ = (pts_a * nCt);
+            long pts_a_ = (pts_a * nCt);
             pts_a++;
             ByteBuffer inputBuffer = audioMediaCode.getInputBuffer(inputBufferIndex);
             inputBuffer.clear();
@@ -458,11 +459,6 @@ class JoyAudioRecord {
             if (outputBufferIndex >= 0) {
                 ByteBuffer outputBuffer = audioMediaCode.getOutputBuffer(outputBufferIndex);
                 {
-//                    if(aIndex<0)
-//                    {
-//                        MediaFormat newFormat = audioMediaCode.getOutputFormat();
-//                        Addtrack(newFormat,false);
-//                    }
                     if (aIndex >= 0) {
                         try {
                             writeSampleData(false, outputBuffer, bufferInfo);
@@ -472,8 +468,8 @@ class JoyAudioRecord {
                     }
                 }
                 audioMediaCode.releaseOutputBuffer(outputBufferIndex, false);
-                bufferInfo = new MediaCodec.BufferInfo();
-                // outputBufferIndex = audioMediaCode.dequeueOutputBuffer(bufferInfo, 10000);//拿到输出缓冲区的索引  10ms
+//                bufferInfo = new MediaCodec.BufferInfo();
+//                // outputBufferIndex = audioMediaCode.dequeueOutputBuffer(bufferInfo, 10000);//拿到输出缓冲区的索引  10ms
             }
         }
     }
@@ -499,14 +495,14 @@ class JoyAudioRecord {
                 File oldFile = new File(GP4225_Device.sRecordFileName+"_.tmp");
                 File newFile = new File(GP4225_Device.sRecordFileName);
 
-                boolean re=false;
+
                 if(newFile.exists() && newFile.isFile())
                 {
-                    re = newFile.delete();
+                    newFile.delete();
                 }
-                re = true;
+
                 if (oldFile.exists() && oldFile.isFile()) {
-                    re = oldFile.renameTo(newFile);
+                    oldFile.renameTo(newFile);
                     Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);
                 }
                 Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);

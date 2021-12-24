@@ -1,9 +1,5 @@
 package com.joyhonest.joycamera.sdk;
 
-
-
-import android.util.Log;
-
 import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -12,29 +8,27 @@ class JoyProcessData {
 
     public static boolean PressData(byte[] data) {
         int nStartInx, nEndInx, inx, nLen;
-
-
-            if (GP4225_Device.MacAddress == null) {
-                GP4225_Device.MacAddress = new byte[6];
-                for (int i = 0; i < 6; i++) {
-                    GP4225_Device.MacAddress[0] = 0;
-                }
+        if (GP4225_Device.MacAddress == null) {
+            GP4225_Device.MacAddress = new byte[6];
+            for (int i = 0; i < 6; i++) {
+                GP4225_Device.MacAddress[0] = 0;
             }
+        }
 
         if (data == null)
             return false;
         if (data.length <= 10)
             return false;
 
-        if ((data[0] & 0xFF) != 'F'     ||
+        if ((data[0] & 0xFF) != 'F' ||
                 (data[1] & 0xFF) != 'D' ||
                 (data[2] & 0xFF) != 'W' ||
                 (data[3] & 0xFF) != 'N') {
             return false;
         }
 
-        String sFileName = "";
-        byte nStatus = 0;
+        String sFileName;
+        byte nStatus;
 
         int m_cmd = (data[4] & 0xFF) + (data[5] & 0xFF) * 0x100;
         int s_cmd = (data[6] & 0xFF) + (data[7] & 0xFF) * 0x100;
@@ -64,22 +58,13 @@ class JoyProcessData {
                 if (data.length >= 35) {
                     GP4225_Device.nFuncMask = data[34] & 0xFF;
                 }
-//                if(data.length>=36)
-//                {
-//                    Log.e("TAG","trmode = "+data[35]);
-//                }
-
                 if (data.length >= 40) {
                     GP4225_Device.nSDRecordTime = (data[36] & 0xFF) | (data[37] & 0xFF) * 0x100 | (data[38] & 0xFF) * 0x10000 | (data[39] & 0xFF) * 0x1000000;
                 } else {
                     GP4225_Device.nSDRecordTime = 0;
                 }
-                if(data.length>=48)
-                {
-                    for(int i=0;i<6;i++)
-                    {
-                        GP4225_Device.MacAddress[i]=data[40+i];
-                    }
+                if (data.length >= 46) {
+                    System.arraycopy(data, 40, GP4225_Device.MacAddress, 0, 6);
                 }
             } else {
                 GP4225_Device.nFuncMask = 0;
@@ -88,7 +73,7 @@ class JoyProcessData {
                 GP4225_Device.nSDRecordTime = 0;
             }
             Integer nb = GP4225_Device.nBattery;
-            EventBus.getDefault().post(nb,"onGetBattery");
+            EventBus.getDefault().post(nb, "onGetBattery");
             EventBus.getDefault().post("", "GP4225_GetStatus");
             return true;
         }
@@ -99,23 +84,19 @@ class JoyProcessData {
                 nEndInx = (data[12] & 0xFF) | (data[13] & 0xFF) * 0x100;
                 JoyGetFiles FF = new JoyGetFiles();
                 FF.files = new ArrayList<>();
-                for (int ii = 0; ii <= nEndInx - nStartInx; ii++)
-                {
+                for (int ii = 0; ii <= nEndInx - nStartInx; ii++) {
                     inx = 14 + 32 + (ii * 68);
                     nLen = (data[inx] & 0xFF) | (data[inx + 1] & 0xFF) * 0x100 | (data[inx + 2] & 0xFF) * 0x10000 | (data[inx + 3] & 0xFF) * 0x1000000;
                     inx += 4;
                     int da = 0;
-                    for (int xx = 0; xx < 32; xx++)
-                    {
-                        if (data[inx + xx] != 0)
-                        {
+                    for (int xx = 0; xx < 32; xx++) {
+                        if (data[inx + xx] != 0) {
                             da++;
                         }
                     }
                     sFileName = "";
-                    if (da != 0)
-                    {
-                        byte []bytes = new byte[da];
+                    if (da != 0) {
+                        byte[] bytes = new byte[da];
                         System.arraycopy(data, inx, bytes, 0, da);
                         sFileName = new String(bytes, 0, da);
                     }
@@ -146,24 +127,24 @@ class JoyProcessData {
 
             switch (s_cmd) {
                 case 0x00001:          //delete a file
-                    JoyFile file = new JoyFile("", sFileName, (int) nStatus);
+                    JoyFile file = new JoyFile("", sFileName,  nStatus);
                     EventBus.getDefault().post(file, "GP4225_DeleteFile");
                     break;
                 case 0x0002:             //delete all file
                     Integer i = (int) nStatus;
                     EventBus.getDefault().post(i, "GP4225_DeleteAllFile");
                     break;
+                default:
+                    break;
             }
             return true;
         }
         if (m_cmd == 0x0021) {
             if (s_cmd == 0x0001) {   //透传数据
-                if (n_len != 0) {
-                    byte[] buffer = new byte[n_len];
-                    System.arraycopy(data, 10, buffer, 0, n_len);
-                    EventBus.getDefault().post(buffer, "GP4225_Get_Transfer_data");
-                    return true;
-                }
+                byte[] buffer = new byte[n_len];
+                System.arraycopy(data, 10, buffer, 0, n_len);
+                EventBus.getDefault().post(buffer, "GP4225_Get_Transfer_data");
+                return true;
             }
             return false;
         }
@@ -180,51 +161,49 @@ class JoyProcessData {
                 break;
                 case 0x0002: //水印开关
                 {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "GP4225_GetDeviceOsdStatus");
                 }
 
                 break;
                 case 0x0003:  //图像翻转
                 {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "GP4225_GetDeviceReversaltatus");
                 }
 
                 break;
                 case 0x0004: //录像分段时间
                 {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "GP4225_GetDeviceRecordTime");
                 }
                 break;
                 case 0x0005:  //返回SSID
-                    if(n_len>0)
-                    {
-                        byte da[] = new byte[n_len+1];
-                        da[n_len]=0;
-                        System.arraycopy(data, 10, da, 0,n_len);
-                        try {
-                            String str = new String(da);
-                            EventBus.getDefault().post(str,"onGetWiFiSSID");
-                        }
-                        catch (Exception e) {
-                            //e.printStackTrace();
-                            ;
-                        }
+                {
+                    byte[] da = new byte[n_len + 1];
+                    da[n_len] = 0;
+                    System.arraycopy(data, 10, da, 0, n_len);
+                    try {
+                        String str = new String(da);
+                        EventBus.getDefault().post(str, "onGetWiFiSSID");
+                    } catch (Exception ignored) {
+
+
                     }
+                }
                     break;
 //                case 0x0006:
 //                    break;
                 case 0x0007: //WifiChannel
                 {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "GP4225_WifiChannel");
                 }
                 break;
                 case 0x0008:  //format SD卡
                 {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "GP4225_FormatSD_Status");
                 }
                 break;
@@ -239,7 +218,7 @@ class JoyProcessData {
                 }
                 break;
                 case 0x000A: {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "GP4225_Reset_Status");
                 }
                 break;
@@ -253,20 +232,20 @@ class JoyProcessData {
                 break;
                 case 0x000C: {
                     //int val = (data[10] & 0xFF) + (data[11] & 0xFF) * 0x100;
-                    Integer aa = (int) ((data[10] & 0xFF) + (data[11] & 0xFF) * 0x100);
+                    Integer aa = ((data[10] & 0xFF) + (data[11] & 0xFF) * 0x100);
                     EventBus.getDefault().post(aa, "GP4225_GetVcm");
                 }
                 break;
                 case 0x000E:  //GP4225_GetLed
                 {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "onGetLed");
                     EventBus.getDefault().post(aa, "GP4225_GetLed");
                 }
                 break;
                 case 0x0010: //GP4225_GetResolution
                 {
-                    Integer aa = (int)(data[10]);
+                    Integer aa = (int) (data[10]);
                     EventBus.getDefault().post(aa, "GP4225_GetResolution");
                 }
                 break;
@@ -328,14 +307,11 @@ class JoyProcessData {
                 }
                 break;
 
-                case 0x0050:
-                {
-                    byte[] aa = null;
-                    if (n_len > 0) {
-                        aa = new byte[n_len];
-                        System.arraycopy(data, 10, aa, 0, n_len);
-                        EventBus.getDefault().post(aa, "GP4225_GetDeviceInfo");
-                    }
+                case 0x0050: {
+                    byte[] aa;
+                    aa = new byte[n_len];
+                    System.arraycopy(data, 10, aa, 0, n_len);
+                    EventBus.getDefault().post(aa, "GP4225_GetDeviceInfo");
                 }
                 break;
                 default:

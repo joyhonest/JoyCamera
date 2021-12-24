@@ -6,8 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaCodec;
-import android.media.MediaFormat;
+
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -98,14 +97,12 @@ public class Utility {
     static void OnSnaporRecrodOK(String sName, int nPhoto) {
         if(sName!=null) {
             String Sn = String.format(Locale.ENGLISH,"%02d%s", nPhoto, sName);
-            if(nPhoto == 0) {
+            if(nPhoto == 0)
+            {
                 if(wifiCamera.photodest == wifiCamera.TYPE_DEST_GALLERY ) {
                     F_Save2ToGallery(sName);
                     wifiCamera.photodest=-1;
-                }
-                else
-                {
-                    EventBus.getDefault().post(Sn, "SavePhotoOK");
+                    Sn = String.format(Locale.ENGLISH,"%02d%s", 3, sName);
                 }
             }
             else
@@ -113,14 +110,13 @@ public class Utility {
                 if(wifiCamera.videodest == wifiCamera.TYPE_DEST_GALLERY ) {
                     F_Save2ToGallery(sName);
                     wifiCamera.videodest = -1;
-                }
-                else
-                {
-                    EventBus.getDefault().post(Sn, "SavePhotoOK");
+                    Sn = String.format(Locale.ENGLISH,"%02d%s", 3, sName);
                 }
             }
+            EventBus.getDefault().post(Sn, "SavePhotoOK");
         }
     }
+
     //  当模块状态改变时回调函数
     private static void onStatusChange(int nStatus) {
         Integer n = nStatus;
@@ -191,7 +187,7 @@ public class Utility {
             }
         }
         else {
-            String StroragePath = "";
+            String StroragePath;
             try {
                 StroragePath = getNormalSDCardPath();
             } catch (Exception e) {
@@ -259,6 +255,7 @@ public class Utility {
                 Uri uri = ContentUris.withAppendedId(contentUri, id);
                 list.add(uri);
             }
+            cursor.close();
         }
         return list;
     }
@@ -287,7 +284,7 @@ public class Utility {
         String slocal = Environment.DIRECTORY_DCIM + File.separator + wifiCamera.sAlbum;
 
         ContentResolver resolver = wifiCamera.getApplicationContext().getContentResolver();
-        Cursor cursor = null;
+        Cursor cursor;
 
         if (!slocal.endsWith("/")) {
             slocal += "/";
@@ -332,7 +329,7 @@ public class Utility {
 
 
         boolean bPhoto = false;
-        String slocal = "";
+        String slocal;
         String sfilename = sFullPathName.substring(sFullPathName.lastIndexOf("/") + 1);
         String stype = sFullPathName.substring(sFullPathName.lastIndexOf(".") + 1);
         if(stype.equalsIgnoreCase("jpg") ||
@@ -351,7 +348,7 @@ public class Utility {
         {
             return -3;
         }
-        Uri uri = null;
+        Uri uri;
         slocal = Environment.DIRECTORY_DCIM + File.separator + wifiCamera.sAlbum;
         ContentResolver contentResolver = wifiCamera.getApplicationContext().getContentResolver();
         ContentValues values = new ContentValues();
@@ -389,7 +386,7 @@ public class Utility {
                     //File file = new File(sFullPathName);
                     //2、建立数据通道
                     FileInputStream fileInputStream = new FileInputStream(file1);
-                    byte[] buf = new byte[1024 * 500];
+                    byte[] buf = new byte[1024 * 100];
                     int length = 0;
                     while ((length = fileInputStream.read(buf)) != -1) {
                         outputStream.write(buf, 0, length);

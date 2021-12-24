@@ -2,7 +2,7 @@ package com.joyhonest.joycamera.sdk;
 
 public class GP4225_Device {
 
-    private static String TAG = "Device";
+    //private static final String TAG = "Device";
 
     public  static int     nMode = 0;
     public  static boolean bSD =false;
