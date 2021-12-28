@@ -150,17 +150,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //wifiCamera.naStartRecord(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY,false);
 
-           // wifiCamera.naSnapPhoto(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY);
+            wifiCamera.naSnapPhoto(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY);
 
-            if(nMode ==1)
-            {
-                wifiCamera.naGetSdFliesList(1,0,20);
-//                File file = getExternalFilesDir("JoyCamera_Test");
-//                String sLocalPath = file.getAbsolutePath();
-//                sLocalPath = sLocalPath+"abc.mov";
-//                //wifiCamera.naStartDonwPlay("MOVI0000.mov",4547584);
-//                wifiCamera.naStartDonwLoad("MOVI0000.mov",4547584,sLocalPath);
-            }
+//            if(nMode ==1)
+//            {
+//                wifiCamera.naGetSdFliesList(1,0,20);
+////                File file = getExternalFilesDir("JoyCamera_Test");
+////                String sLocalPath = file.getAbsolutePath();
+////                sLocalPath = sLocalPath+"abc.mov";
+////                //wifiCamera.naStartDonwPlay("MOVI0000.mov",4547584);
+////                wifiCamera.naStartDonwLoad("MOVI0000.mov",4547584,sLocalPath);
+//            }
 
 
             //wifiCamera.naSetRecordWH(640/2,360/2);
