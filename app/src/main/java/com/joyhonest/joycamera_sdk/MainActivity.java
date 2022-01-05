@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //wifiCamera.naStartRecord(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY,false);
 
-            wifiCamera.naSnapPhoto(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY);
+           // wifiCamera.naSnapPhoto(null,wifiCamera.TYPE_ONLY_PHONE,wifiCamera.TYPE_DEST_GALLERY);
 
 //            if(nMode ==1)
 //            {

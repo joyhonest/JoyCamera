@@ -70,6 +70,7 @@ public class wifiCamera {
      * 以下这些供用户使用
     */
 
+    public static native  boolean naIsJoyCamera();
     public static native  int naInit(String sPara);
     private static native  int naStopA();
     public static  int naStop()
