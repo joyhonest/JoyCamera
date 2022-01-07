@@ -189,12 +189,22 @@ class JoyProcessData {
                         EventBus.getDefault().post(str, "onGetWiFiSSID");
                     } catch (Exception ignored) {
 
+                    }
+                }
+                    break;
+                case 0x0006:  //wifi password
+                {
+                    byte[] da = new byte[n_len + 1];
+                    da[n_len] = 0;
+                    System.arraycopy(data, 10, da, 0, n_len);
+                    try {
+                        String str = new String(da);
+                        EventBus.getDefault().post(str, "onGetWiFiPassword");
+                    } catch (Exception ignored) {
 
                     }
                 }
                     break;
-//                case 0x0006:
-//                    break;
                 case 0x0007: //WifiChannel
                 {
                     Integer aa = (int) (data[10]);
@@ -281,6 +291,7 @@ class JoyProcessData {
                 }
                 break;
                 case 0x0018:   //WIFI 板主动发送按键指令
+                {
                     if (n_len == 4) {
                         byte[] da = new byte[4];
                         System.arraycopy(data, 10, da, 0, 4);
@@ -289,8 +300,10 @@ class JoyProcessData {
                     } else {
                         bOK = false;
                     }
+                }
                     break;
                 case 0x0019: //雷达数据发送(设备发起或应答)
+                {
                     if (n_len != 0x000D) {
                         bOK = false;
                         break;
@@ -299,6 +312,7 @@ class JoyProcessData {
                         System.arraycopy(data, 10, da, 0, 0x0D);
                         EventBus.getDefault().post(da, "GP4225_GetRadarData");
                     }
+                }
                     break;
                 case 0x0020: {
                     //byte a = data[11];

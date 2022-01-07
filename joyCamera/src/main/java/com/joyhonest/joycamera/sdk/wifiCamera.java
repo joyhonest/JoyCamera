@@ -150,20 +150,20 @@ public class wifiCamera {
         {
             String strna = Utility.getFileNameFromDate(true);
             sFileName1 = strna;
-            if(sFileName2 !=null)
-            {
-                strna = sFileName2.substring(sFileName2.lastIndexOf("/") + 1);
-                strna = sLocalPath+"/"+strna;
-            }
-            strna = strna+"_.tmp";
-            re =   GP4225_Device.StartRecord(strna, nType ,dest,bRecordAudio);
+//            if(sFileName2 !=null)
+//            {
+//                strna = sFileName2.substring(sFileName2.lastIndexOf("/") + 1);
+//                strna = sLocalPath+"/"+strna;
+//            }
+            sFileName = strna+"_.tmp";
+            //re =   GP4225_Device.StartRecord(sFileName, nType ,dest,bRecordAudio);
         }
-        else {
-            re =   GP4225_Device.StartRecord(sFileName, nType ,dest,bRecordAudio);
-        }
+//        else {
+//            re =   GP4225_Device.StartRecord(sFileName, nType ,dest,bRecordAudio);
+//        }
+        re =   GP4225_Device.StartRecord(sFileName, nType ,dest,bRecordAudio);
         if(re == 0)
         {
-
             GP4225_Device.sRecordFileName = sFileName1;
         }
         return  re;
@@ -310,6 +310,14 @@ public class wifiCamera {
     {
         Utility.F_CreateLocalDir(sDir);
     }
+
+
+
+
+    public static native void naGetWifiSSID();
+    public static native  void  naSetWifiSSID(String sSSid);
+    public static native boolean naSetWifiPassword(String sPassword);
+    public static native boolean naGetWifiPassword();
 
 
 

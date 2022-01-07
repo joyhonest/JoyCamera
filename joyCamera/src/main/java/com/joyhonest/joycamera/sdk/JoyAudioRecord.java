@@ -155,7 +155,7 @@ class JoyAudioRecord {
         }
         if (nType == wifiCamera.TYPE_ONLY_SD) {
             //nRecDes = dest;
-            StartRecord_A(pFileName, bRecordAudio);
+            //StartRecord_A(pFileName, bRecordAudio);
             Utility.naStartRecordV(nType, dest);
         }
 
