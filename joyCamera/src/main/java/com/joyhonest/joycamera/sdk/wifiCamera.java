@@ -316,8 +316,8 @@ public class wifiCamera {
 
     public static native void naGetWifiSSID();
     public static native  void  naSetWifiSSID(String sSSid);
-    public static native boolean naSetWifiPassword(String sPassword);
-    public static native boolean naGetWifiPassword();
+    public static native int naSetWifiPassword(String sPassword);
+    public static native void naGetWifiPassword();
 
     public static native int naEliminateBlackBorder(int x1,int y1,int x2,int y2);
 

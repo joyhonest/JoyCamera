@@ -181,8 +181,8 @@ class JoyProcessData {
                 break;
                 case 0x0005:  //返回SSID
                 {
-                    byte[] da = new byte[n_len + 1];
-                    da[n_len] = 0;
+                    byte[] da = new byte[n_len];
+                  //  da[n_len] = 0;
                     System.arraycopy(data, 10, da, 0, n_len);
                     try {
                         String str = new String(da);
@@ -194,8 +194,8 @@ class JoyProcessData {
                     break;
                 case 0x0006:  //wifi password
                 {
-                    byte[] da = new byte[n_len + 1];
-                    da[n_len] = 0;
+                    byte[] da = new byte[n_len];
+                //    da[n_len] = 0;
                     System.arraycopy(data, 10, da, 0, n_len);
                     try {
                         String str = new String(da);
