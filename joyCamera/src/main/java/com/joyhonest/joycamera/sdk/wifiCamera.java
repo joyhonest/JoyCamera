@@ -319,9 +319,9 @@ public class wifiCamera {
     public static native int naSetWifiPassword(String sPassword);
     public static native void naGetWifiPassword();
 
-    public static native void naRebootDevice();
-
-    public static native int naEliminateBlackBorder(int x1,int y1,int x2,int y2);
+    public static native void naRebootDevice(); //重启设备
+    public static native void naResetDeviceDefault(); //恢复默认值
+    public static native int naEliminateBlackBorder(int x1,int y1,int x2,int y2); //截去黑边
 
 
 
