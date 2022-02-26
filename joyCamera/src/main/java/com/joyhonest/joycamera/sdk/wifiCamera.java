@@ -82,6 +82,8 @@ public class wifiCamera {
 
 
 
+
+    public static native String naGetCameraIP();
     public static native void naSetCameraStation(boolean b);
 
 
@@ -105,6 +107,9 @@ public class wifiCamera {
     public static native void naSetEnableRotate(boolean b); //视频是否可以旋转任意角度。 如果调用naEnableSensor，会从naEnableSensor 内部调用次函数
     public static native void naSetFilterRotate(float nAngle); //一般用户无需调用
     public static native void naSetEnableEQ(boolean b);
+    public static native void naSetBrightness(float fBrightness);
+    public static native void naSetContrast(float fContrast);
+    public static native void naSetSaturation(float fSaturation);
 
     public static native int naSetRecordWH(int ww, int hh);
 
@@ -186,7 +191,7 @@ public class wifiCamera {
         return JoyAudioRecord.StopRecord(wifiCamera.TYPE_BOTH_PHONE_SD);
 
     }
-    public static native void naSetBrightness(float fBrightness);
+
     //镜头传过来的数据旋转 0 90 180 270
     public static native  void naSetCameraDataRota(int n);
     public static native void naSetsquare(boolean b);     //正方形显示

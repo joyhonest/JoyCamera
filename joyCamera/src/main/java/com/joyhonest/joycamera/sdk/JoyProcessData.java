@@ -77,6 +77,14 @@ class JoyProcessData {
             EventBus.getDefault().post("", "GP4225_GetStatus");
             return true;
         }
+        if(m_cmd == 0xFFFF)
+        {
+            byte[] buffer = new byte[n_len+6];
+            System.arraycopy(data,4,buffer,0,n_len+6);
+            EventBus.getDefault().post(buffer,"onGetCustomData");
+            return true;
+        }
+
         if (m_cmd == 0x0002)  //GetFileList
         {
             if (s_cmd == 0x0001 || s_cmd == 0x0002 || s_cmd == 0x0003) {  //VideoList   LockFileList  //图片文件
