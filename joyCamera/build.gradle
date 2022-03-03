@@ -67,6 +67,7 @@ dependencies {
 //2.1
 //2.2
 //2.3  添加station 下获取 设备的IP地址
+//2.4  修复bugs
 
 //git commit -m "xxx" -a
 //git push -u origin main
