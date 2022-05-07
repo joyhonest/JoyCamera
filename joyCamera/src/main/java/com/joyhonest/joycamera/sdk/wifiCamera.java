@@ -57,8 +57,10 @@ public class wifiCamera {
     }
 
 
+    public static native void naAddUsbYuvBuffer(ByteBuffer buffer,int w,int h);
 
-    //public  static  native  void StartRecordAudio(boolean b);
+
+
 
     private static native void naSetDirectBuffer(Object buffer, int nLen);
     public static native void eglinit();
@@ -101,8 +103,12 @@ public class wifiCamera {
 
     public static native  void naSetVRwhiteBack(boolean bVR_WhitClolor);
 
+    public static native void naSetScal(float fScal); //设定放大显示倍数
+
+
     public static native  void naSetMirror(boolean b);
     public static native void naSet3DDenoiser(boolean b); //视频是否3D降噪
+    public static native void naSet3DDenoiserParams(float d1,float d2,float d3,float d4);
 
     public static native void naSetEnableRotate(boolean b); //视频是否可以旋转任意角度。 如果调用naEnableSensor，会从naEnableSensor 内部调用次函数
     public static native void naSetFilterRotate(float nAngle); //一般用户无需调用
@@ -111,7 +117,17 @@ public class wifiCamera {
     public static native void naSetContrast(float fContrast);
     public static native void naSetSaturation(float fSaturation);
 
+    public static native void naSetColortemperature(boolean b);
+    public static native void naSetColortemperatureValue(int nColor);
+
+    public static native void naSetRedChannel(int nRedCh);
+    public static native void naSetGreenChannel(int nGreenCh);
+    public static native void naSetBlueChannel(int nBlueCh);
+
+
     public static native int naSetRecordWH(int ww, int hh);
+
+    public static native int naSetStyle(int n); //设定不同的显示效果，比如负片等。。。 0 表示原图
 
     //设定是否检测 图传协议，有些固件支持 同一个固件 用不同的图传协议
     //但因为要判定协议，Open摄像头时。多需要100ms ,需要在 naInit之前调用它

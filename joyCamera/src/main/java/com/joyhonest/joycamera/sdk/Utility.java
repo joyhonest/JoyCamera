@@ -30,6 +30,7 @@ public class Utility {
 
     private static final String TAG = "Utility";
     static ByteBuffer mDirectBuffer;
+    static ByteBuffer mDirectUsbCameraYuvBuffer;
 
 
 
