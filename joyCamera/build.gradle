@@ -69,8 +69,9 @@ dependencies {
 //2.3  添加station 下获取 设备的IP地址
 //2.4  修复bugs
 //2.7
+//2.8
 
-//git commit -m "2.7" -a
+//git commit -m "2.8" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

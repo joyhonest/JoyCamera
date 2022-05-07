@@ -127,7 +127,7 @@ public class wifiCamera {
 
     public static native int naSetRecordWH(int ww, int hh);
 
-    public static native int naSetStyle(int n); //设定不同的显示效果，比如负片等。。。 0 表示原图
+    public static native void naSetStyle(int n); //设定不同的显示效果，比如负片等。。。 0 表示原图
 
     //设定是否检测 图传协议，有些固件支持 同一个固件 用不同的图传协议
     //但因为要判定协议，Open摄像头时。多需要100ms ,需要在 naInit之前调用它
