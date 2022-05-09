@@ -72,7 +72,7 @@ dependencies {
 //2.8
 //2.9  优化黑白高对比显示特效，利用 neon 来提供速度
 
-//git commit -m "2.9" -a
+//git commit -m "3.0" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
