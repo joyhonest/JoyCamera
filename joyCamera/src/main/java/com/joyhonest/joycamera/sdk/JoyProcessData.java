@@ -72,6 +72,7 @@ class JoyProcessData {
                 GP4225_Device.bAdjfocus = false;
                 GP4225_Device.nSDRecordTime = 0;
             }
+
             Integer nb = GP4225_Device.nBattery;
             EventBus.getDefault().post(nb, "onGetBattery");
             EventBus.getDefault().post("", "GP4225_GetStatus");
