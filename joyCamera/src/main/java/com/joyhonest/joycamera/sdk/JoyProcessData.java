@@ -63,8 +63,10 @@ class JoyProcessData {
                 } else {
                     GP4225_Device.nSDRecordTime = 0;
                 }
-                if (data.length >= 46) {
+                if (data.length >= 48) {
                     System.arraycopy(data, 40, GP4225_Device.MacAddress, 0, 6);
+                    GP4225_Device.CustermerType =   data[46];
+                    GP4225_Device.DeviceType =   data[47];
                 }
             } else {
                 GP4225_Device.nFuncMask = 0;

@@ -10,7 +10,8 @@ public class GP4225_Device {
 
 
     public  static byte[] MacAddress = null;//= new byte[6];
-
+    public  static  byte  CustermerType=0;
+    public  static  byte  DeviceType=0;
 
     public  static int VideosCount = 0;
     public  static int LockedCount = 0;
