@@ -332,6 +332,29 @@ class JoyProcessData {
                 }
                 break;
 
+                case 0x0021:  //获取当前变焦参数
+                {
+                    byte[] da = new byte[0x04];
+                    System.arraycopy(data, 10, da, 0, 0x04);
+                    EventBus.getDefault().post(da, "onGetZoom_res");
+                }
+                break;
+                case 0x0022:  //设置当前变焦参数 的返回，一般这个结果可以不用理会，使用 0x21 即可读取
+                {
+                    byte[] da = new byte[0x04];
+                    System.arraycopy(data, 10, da, 0, 0x04);
+                    EventBus.getDefault().post(da, "onSetZoom_res");
+                }
+                break;
+                case 0x0028:   //摄像头温度报警，固件每2sec回传一次
+                {
+                    byte[] da = new byte[0x08];
+                    System.arraycopy(data, 10, da, 0, 0x08);
+                    EventBus.getDefault().post(da, "onSensorWarn_res");
+                }
+                    break;
+
+
                 case 0x0050: {
                     byte[] aa;
                     aa = new byte[n_len];

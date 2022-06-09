@@ -84,7 +84,7 @@ public class Utility {
     private static void onUdpRevData(byte[] data, int nPort) {
         if (nPort == 20001) {
             if (!GP4225_Device.GP4225_PressData(data)) {
-                ;
+                EventBus.getDefault().post(data,"onGet20001PortData");
             }
         }
         if(nPort == 20000)
