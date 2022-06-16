@@ -75,7 +75,9 @@ dependencies {
 //3.6  优化naIsJoyhonest
 //3.7  增加 Sensor 温度过高的API，当然这个也需要固件支持
 
-//git commit -m "3.7" -a
+//3.8  优化圆形显示的效果，减少锯齿
+
+//git commit -m "3.8" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
