@@ -65,12 +65,12 @@ class JoyAudioRecord {
             videoMediaCode.stop();
             videoMediaCode.release();
             videoMediaCode = null;
-            pts = 0;
-            pts_a = 0;
-            pts_ = 0;
-            fps = fps_;
-            nCountFrame = 0;
-            nCountFrameAudio = 0;
+//            pts = 0;
+//            pts_a = 0;
+//            pts_ = 0;
+//            fps = fps_;
+//            nCountFrame = 0;
+//            nCountFrameAudio = 0;
         }
         fps = fps_;
 
@@ -97,10 +97,12 @@ class JoyAudioRecord {
         //描述平均位速率（以位/秒为单位）的键。 关联的值是一个整数
         mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitrate);
         //关键帧间隔时间，单位是秒
-        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);
+        mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
         //描述视频格式的帧速率（以帧/秒为单位）的键。
         mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, fps);//帧率，一般在15至30之内，太小容易造成视频卡顿。
         mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, color);//色彩格式，具体查看相关API，不同设备支持的色彩格式不尽相同
+        // 调整码率的控流模式
+        mediaFormat.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_VBR);
         try {
             videoMediaCode.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
         } catch (Exception e) {
