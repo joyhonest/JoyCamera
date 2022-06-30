@@ -346,5 +346,7 @@ public class wifiCamera {
     public static native int naEliminateBlackBorder(int x1,int y1,int x2,int y2); //截去黑边
 
 
+    public static native void naSetTimeOsd(int x,int y,int nDateType); //x设置足够大就会不显示
+
 
 }

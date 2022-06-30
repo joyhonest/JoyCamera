@@ -77,8 +77,9 @@ dependencies {
 
 //3.8  优化圆形显示的效果，减少锯齿
 //3.9  优化高分辨率录像时的编码效果。
+//4.0  添加时间水印API
 
-//git commit -m "3.9" -a
+//git commit -m "4.0" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
