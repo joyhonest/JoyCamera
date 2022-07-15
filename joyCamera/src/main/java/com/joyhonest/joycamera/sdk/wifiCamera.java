@@ -334,6 +334,8 @@ public class wifiCamera {
     }
 
 
+    public static native void naGetBattery();
+
 
 
     public static native void naGetWifiSSID();
