@@ -20,9 +20,10 @@ public class wifiCamera {
     public static final int TYPE_ONLY_PHONE = 0;
     public static final int TYPE_ONLY_SD = 1;
     public static final int TYPE_BOTH_PHONE_SD = 2;
+    public static final int TYPE_CONVERT = 3;
 
-    public static final int TYPE_DEST_SNADBOX = 0;
-    public static final int TYPE_DEST_GALLERY = 1;
+    public static final int DEST_SNADBOX = 0;
+    public static final int DEST_GALLERY = 1;
 
     public static final int TYPE_VIDEO = 1;
     public static final int TYPE_PHOTO = 3;
@@ -142,7 +143,7 @@ public class wifiCamera {
     {
         photoType = nType;
         photodest = dest;
-        if(photodest== TYPE_DEST_GALLERY)
+        if(photodest== DEST_GALLERY)
         {
             String strna = Utility.getFileNameFromDate(false);
             if(sPath !=null)
@@ -157,6 +158,16 @@ public class wifiCamera {
         }
     }
 
+    public  static native int naConvert(String sSource,String sDestination);
+
+//    public static int naConvertA(String sSource,String sDestination)
+//    {
+//        int re =   GP4225_Device.StartRecord(sDestination, TYPE_CONVERT ,DEST_SNADBOX,false);
+//        if(re == 0)
+//            re = naConvertA(sSource);
+//        return re;
+//    }
+
     //录像
     public static  int naStartRecord(String sFileName2, int nType ,int dest,boolean bRecordAudio)
     {
@@ -168,7 +179,7 @@ public class wifiCamera {
 
         int  re = -1;
 
-        if(videodest== TYPE_DEST_GALLERY)
+        if(videodest== DEST_GALLERY)
         {
             String strna = Utility.getFileNameFromDate(true);
             sFileName1 = strna;

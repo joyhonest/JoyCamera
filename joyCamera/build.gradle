@@ -79,8 +79,9 @@ dependencies {
 //3.9  优化高分辨率录像时的编码效果。
 //4.0  添加时间水印API
 //4.1  优化单独调整RGB通道算法
+//4.2  优化截黑边
 
-//git commit -m "4.1" -a
+//git commit -m "4.2" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

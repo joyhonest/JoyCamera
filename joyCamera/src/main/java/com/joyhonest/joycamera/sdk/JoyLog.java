@@ -3,7 +3,7 @@ package com.joyhonest.joycamera.sdk;
 import android.util.Log;
 
 public class JoyLog {
-    private static  boolean DEBUG = true;
+    private static  boolean DEBUG = false;
     public static  void  SetDebug(boolean b)
     {
         DEBUG = b;

@@ -29,16 +29,11 @@ public class GP4225_Device {
     public  static int nSDRecordTime = 0;
 
     public  static String sVer = "";
-
     static String sRecordFileName=null;
-
-
-
     static boolean GP4225_PressData(byte[] data)
     {
         return JoyProcessData.PressData(data);
     }
-
     static int StartRecord(String pFileName, int nType, int dest, boolean bRecordAudio)
     {
         return  JoyAudioRecord.StartRecord(pFileName,nType,dest,bRecordAudio);

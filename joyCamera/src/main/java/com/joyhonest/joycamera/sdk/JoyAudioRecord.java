@@ -20,25 +20,14 @@ import java.nio.ByteBuffer;
 
 
 class JoyAudioRecord {
-
     private static final int KEY_CHANNEL_COUNT = 1;
     private static final int KEY_SAMPLE_RATE = 16000;
-
     private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
-
     private static final int CHANNEL_MODE = AudioFormat.CHANNEL_IN_MONO;
-
-
     public static int BUFFFER_SIZE = (2048 * KEY_CHANNEL_COUNT);
-
     private static final int nCt = (BUFFFER_SIZE * 1000000) / (KEY_SAMPLE_RATE * 2 * KEY_CHANNEL_COUNT);
-
     private static int fps = 0;
-
-
     private static final String TAG = "JoyAudioRecord";
-
-
     private static boolean bGAudio = false;
     private static boolean bRecording = false;
     private static boolean bMuxerStart = false;
@@ -53,27 +42,17 @@ class JoyAudioRecord {
     private static long nCountFrameAudio = 0;
     private static int vIndex = -1;
     private static int aIndex = -1;
-
     public static byte[] mBuffer;
-    private static Worker worker = null;
-
+    private static Worker audioWorker = null;
     private static boolean bCanStartWrite = false;
-
 
     private static MediaFormat F_GetMediaFormat(int width, int height, int bitrate, int fps_, int color) {
         if (videoMediaCode != null) {
             videoMediaCode.stop();
             videoMediaCode.release();
             videoMediaCode = null;
-//            pts = 0;
-//            pts_a = 0;
-//            pts_ = 0;
-//            fps = fps_;
-//            nCountFrame = 0;
-//            nCountFrameAudio = 0;
         }
         fps = fps_;
-
         pts_a = 0;
         pts = 0;
         pts_ = 0;
@@ -90,7 +69,6 @@ class JoyAudioRecord {
             videoMediaCode = null;
             return null;
         }
-
         MediaFormat mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, width, height); //height和width一般都是照相机的height和width。
         mediaFormat.setInteger(MediaFormat.KEY_WIDTH, width);
         mediaFormat.setInteger(MediaFormat.KEY_HEIGHT, height);
@@ -111,7 +89,6 @@ class JoyAudioRecord {
         }
         return mediaFormat;
     }
-
     static int InitVideo(int width, int height, int bitrate, int fps1) {
         int nColor;
         nColor = MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar;
@@ -121,7 +98,6 @@ class JoyAudioRecord {
                 nColor = 0;
             }
         }
-
         if (nColor != 0) {
             videoMediaCode.start();
         } else {
@@ -148,22 +124,23 @@ class JoyAudioRecord {
         if (bRecording)
             return -2;
         bCanStartWrite = false;
-        //int nRecDes = wifiCamera.TYPE_DEST_SNADBOX;
+        if(nType == wifiCamera.TYPE_CONVERT)
+        {
+            StartRecord_A(pFileName, false);
+            Utility.naStartRecordV(nType, dest);
+            bRecording = true;
+            return 0;
+        }
         if (nType == wifiCamera.TYPE_ONLY_PHONE || nType == wifiCamera.TYPE_BOTH_PHONE_SD) {
-            //nRecDes = dest;
             StartRecord_A(pFileName, bRecordAudio);
             Utility.naStartRecordV(nType, dest);
             bRecording = true;
         }
         if (nType == wifiCamera.TYPE_ONLY_SD) {
-            //nRecDes = dest;
-            //StartRecord_A(pFileName, bRecordAudio);
             Utility.naStartRecordV(nType, dest);
         }
-
         return 0;
     }
-
 
     private static void StartRecord_A(String sfliename, boolean bAudio) {
         bGAudio = bAudio;
@@ -193,10 +170,8 @@ class JoyAudioRecord {
         }
         try {
             mediaMuxer = new MediaMuxer(sfliename, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
-
             bMuxerStart = false;
         } catch (Exception ignored) {
-
         }
         if (bGAudio) {
             if (!isCanRecordAudio()) {
@@ -249,12 +224,12 @@ class JoyAudioRecord {
                     audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT, BUFFFER_SIZE);
                     audioRecord.startRecording();
                     {
-                        if (worker != null && worker.isRunning) {
-                            worker.isRunning = false;
+                        if (audioWorker != null && audioWorker.isRunning) {
+                            audioWorker.isRunning = false;
                             SystemClock.sleep(20);
                         }
-                        worker = new Worker();
-                        worker.start();
+                        audioWorker = new Worker();
+                        audioWorker.start();
                     }
                 }
             }
@@ -262,15 +237,14 @@ class JoyAudioRecord {
                 audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, KEY_SAMPLE_RATE, CHANNEL_MODE, AUDIO_FORMAT, BUFFFER_SIZE);
                 audioRecord.startRecording();
                 {
-                    if (worker != null && worker.isRunning) {
-                        worker.isRunning = false;
+                    if (audioWorker != null && audioWorker.isRunning) {
+                        audioWorker.isRunning = false;
                         SystemClock.sleep(20);
                     }
-                    worker = new Worker();
-                    worker.start();
+                    audioWorker = new Worker();
+                    audioWorker.start();
                 }
             }
-
         } else {
             if (audioRecord != null) {
                 try {
@@ -282,15 +256,13 @@ class JoyAudioRecord {
                 audioRecord = null;
             }
 
-            if (worker != null) {
-                worker.isRunning = false;
+            if (audioWorker != null) {
+                audioWorker.isRunning = false;
                 SystemClock.sleep(50);
-                worker = null;
+                audioWorker = null;
             }
         }
     }
-
-
     private static boolean isCanRecordAudio() {
         boolean re = false;
         try {
@@ -314,10 +286,6 @@ class JoyAudioRecord {
         }
         return re;
     }
-
-
-
-
     private static void writeSampleData(boolean bVideo, ByteBuffer byteBuf, MediaCodec.BufferInfo bufferInfo) {
         if (!bMuxerStart)
             return;
@@ -325,7 +293,6 @@ class JoyAudioRecord {
         {
             bCanStartWrite = true;
         }
-
         if (!bCanStartWrite)
             return;
         if (bVideo) {
@@ -403,7 +370,6 @@ class JoyAudioRecord {
         }
         if (!bRecording)
             return;
-
         int inputBufferIndex = videoMediaCode.dequeueInputBuffer(5000);
         if (inputBufferIndex >= 0) {//当输入缓冲区有效时,就是>=0
             pts_ = (pts * (1000000 / fps));
@@ -417,7 +383,6 @@ class JoyAudioRecord {
             int outputBufferIndex = videoMediaCode.dequeueOutputBuffer(bufferInfo, 10000);//拿到输出缓冲区的索引  10ms
             if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                 MediaFormat newFormat = videoMediaCode.getOutputFormat();
-
                 Addtrack(newFormat, true);
             }
             if (outputBufferIndex >= 0) {
@@ -476,8 +441,6 @@ class JoyAudioRecord {
         }
     }
 
-
-
     public static int StopRecord(int nType) {
         if(nType == wifiCamera.TYPE_ONLY_SD)
         {
@@ -496,16 +459,13 @@ class JoyAudioRecord {
                 mediaMuxer.release();
                 File oldFile = new File(GP4225_Device.sRecordFileName+"_.tmp");
                 File newFile = new File(GP4225_Device.sRecordFileName);
-
-
                 if(newFile.exists() && newFile.isFile())
                 {
                     newFile.delete();
                 }
-
                 if (oldFile.exists() && oldFile.isFile()) {
                     oldFile.renameTo(newFile);
-                    Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);
+//                    Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);
                 }
                 Utility.OnSnaporRecrodOK(GP4225_Device.sRecordFileName,1);
                 GP4225_Device.sRecordFileName = null;
@@ -513,20 +473,23 @@ class JoyAudioRecord {
             } catch (Exception ignored) {
 
             }
-            if(worker!=null)
+
+            mediaMuxer = null;
+            bCanStartWrite = false;
+
+            if(audioWorker!=null)
             {
-                worker.isRunning = false;
+                audioWorker.isRunning = false;
                 try {
-                    worker.join(100);
+                    audioWorker.join(100);
                 }
                 catch (Exception ignored)
                 {
 
                 }
-                worker=null;
+                audioWorker=null;
             }
-            mediaMuxer = null;
-            bCanStartWrite = false;
+
             if (bGAudio) {
                 try {
                     audioRecord.stop();
@@ -560,4 +523,78 @@ class JoyAudioRecord {
         }
         return 0;
     }
+
+    public static void VidoeDataEncoderA(byte[] data) {
+        if (videoMediaCode == null) {
+            return;
+        }
+        if (!bRecording)
+            return;
+
+        int inputBufferIndex = videoMediaCode.dequeueInputBuffer(5000);
+        if (inputBufferIndex >= 0) {//当输入缓冲区有效时,就是>=0
+            pts_ = (pts * (1000000 / fps));
+            pts++;
+            ByteBuffer inputBuffer = videoMediaCode.getInputBuffer(inputBufferIndex);
+            inputBuffer.clear();
+            inputBuffer.put(data);//往输入缓冲区写入数据,
+            ////五个参数，第一个是输入缓冲区的索引，第二个数据是输入缓冲区起始索引，第三个是放入的数据大小，第四个是时间戳，保证递增就是
+            videoMediaCode.queueInputBuffer(inputBufferIndex, 0, data.length, pts_, 0);
+            MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
+            int outputBufferIndex = videoMediaCode.dequeueOutputBuffer(bufferInfo, 10000);//拿到输出缓冲区的索引  10ms
+            if(bufferInfo.flags == MediaCodec.BUFFER_FLAG_CODEC_CONFIG)
+            {
+//                if(!bGetPPS)
+//                {
+//                    bGetPPS = true;
+//                }
+            }
+
+            if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                MediaFormat newFormat = videoMediaCode.getOutputFormat();
+                //Addtrack(newFormat, true);
+            }
+            if (outputBufferIndex >= 0)
+            {
+
+                ByteBuffer outputBuffer = videoMediaCode.getOutputBuffer(outputBufferIndex);
+                {
+
+                }
+                videoMediaCode.releaseOutputBuffer(outputBufferIndex, false);
+            }
+        }
+    }
+
+    public static int  Init_MediaConvert(int width, int height, int bitrate, int fps1)
+    {
+        if (bRecording) {
+            try {
+                bRecording = false;
+                bMuxerStart = false;
+                if (videoMediaCode != null) {
+                    videoMediaCode.stop();
+                    videoMediaCode.release();
+                    videoMediaCode = null;
+                }
+                if (audioMediaCode != null) {
+                    audioMediaCode.stop();
+                    audioMediaCode.release();
+                    audioMediaCode = null;
+                }
+                if (mediaMuxer != null) {
+                    mediaMuxer.stop();
+                    mediaMuxer.release();
+                    mediaMuxer = null;
+                }
+            } catch (Exception ignored) {
+
+            }
+
+        }
+        return InitVideo(width, height, bitrate,fps1);
+
+    }
+
+
 }

@@ -31,6 +31,7 @@ public class Utility {
     private static final String TAG = "Utility";
     static ByteBuffer mDirectBuffer;
     static ByteBuffer mDirectUsbCameraYuvBuffer;
+    static boolean  bJavaUdp=false;
 
 
 
@@ -38,6 +39,11 @@ public class Utility {
     private static int InitVideoMediacode(int width, int height, int bitrate, int fps1)
     {
         return GP4225_Device.InitVideo(width,height,bitrate,fps1);
+    }
+
+    private static int Init_MediaConvert(int width, int height, int bitrate, int fps1)
+    {
+        return JoyAudioRecord.Init_MediaConvert(width,height,bitrate,fps1);
     }
 
     static native void naStopRecordV(int nType);
@@ -83,13 +89,19 @@ public class Utility {
     // 读取 20000 或者 20001端口，如果SDK内部没有处理，就通过这里返回来处理
     private static void onUdpRevData(byte[] data, int nPort) {
         if (nPort == 20001) {
-            if (!GP4225_Device.GP4225_PressData(data)) {
+            if(bJavaUdp)
+            {
                 EventBus.getDefault().post(data,"onGet20001PortData");
+            }
+            else {
+                if (!GP4225_Device.GP4225_PressData(data)) {
+                    EventBus.getDefault().post(data, "onGet20001PortData");
+                }
             }
         }
         if(nPort == 20000)
         {
-
+            EventBus.getDefault().post(data,"onGet20000PortData");
         }
     }
 
@@ -100,7 +112,7 @@ public class Utility {
             String Sn = String.format(Locale.ENGLISH,"%02d%s", nPhoto, sName);
             if(nPhoto == 0)
             {
-                if(wifiCamera.photodest == wifiCamera.TYPE_DEST_GALLERY ) {
+                if(wifiCamera.photodest == wifiCamera.DEST_GALLERY ) {
                     F_Save2ToGallery(sName);
                     wifiCamera.photodest=-1;
                     Sn = String.format(Locale.ENGLISH,"%02d%s", 3, sName);
@@ -108,7 +120,7 @@ public class Utility {
             }
             else
             {
-                if(wifiCamera.videodest == wifiCamera.TYPE_DEST_GALLERY ) {
+                if(wifiCamera.videodest == wifiCamera.DEST_GALLERY ) {
                     F_Save2ToGallery(sName);
                     wifiCamera.videodest = -1;
                     Sn = String.format(Locale.ENGLISH,"%02d%s", 3, sName);
