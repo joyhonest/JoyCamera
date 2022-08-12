@@ -25,6 +25,9 @@ public class wifiCamera {
     public static final int DEST_SNADBOX = 0;
     public static final int DEST_GALLERY = 1;
 
+    public static final int TYPE_DEST_SNADBOX = 0;
+    public static final int TYPE_DEST_GALLERY = 1;
+
     public static final int TYPE_VIDEO = 1;
     public static final int TYPE_PHOTO = 3;
 
