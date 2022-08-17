@@ -81,8 +81,9 @@ dependencies {
 //4.1  优化单独调整RGB通道算法
 //4.2  优化截黑边
 //4.3  优化截黑边
+//4.4  修复bugs
 
-//git commit -m "4.3" -a
+//git commit -m "4.4" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
