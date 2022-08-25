@@ -353,6 +353,12 @@ class JoyProcessData {
                     EventBus.getDefault().post(da, "onSensorWarn_res");
                 }
                     break;
+                case 0x002B: {
+                    byte[] da = new byte[n_len];
+                    System.arraycopy(data, 10, da, 0, n_len);
+                    EventBus.getDefault().post(da, "onGetCameraPara");
+                }
+                    break;
 
 
                 case 0x0050: {

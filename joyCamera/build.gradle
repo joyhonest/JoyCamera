@@ -82,8 +82,9 @@ dependencies {
 //4.2  优化截黑边
 //4.3  优化截黑边
 //4.4  修复bugs
+//4.5  添加 设置和读取 摄像头参数的 命令
 
-//git commit -m "4.4" -a
+//git commit -m "4.5" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

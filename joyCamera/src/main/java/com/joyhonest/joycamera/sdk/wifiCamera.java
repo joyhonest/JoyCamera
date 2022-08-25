@@ -254,7 +254,7 @@ public class wifiCamera {
  */
     public static native int naGetSdFliesList(int nFileType,int nStartInx,int nCount);
     //下载文件
-    public static native int naStartDonwLoad(String sFileName,int nLen,String sSaveName);
+    public static native int naStartDownLoad(String sFileName,int nLen,String sSaveName);
     //在线播放视频，有些SD卡视频不支持在线播放
     public static native int naStartDonwPlay(String sFileName,int nLen);
     //停止播放
@@ -364,5 +364,11 @@ public class wifiCamera {
 
     public static native void naSetTimeOsd(int x,int y,int nDateType); //x设置足够大就会不显示
 
+
+    //读取摄像头参数设定
+
+    public static native void naGetCameraPara();
+    public static native void naSetEV(int nEv);
+    public static native void naSetLightFreq(boolean b50Hz);
 
 }
