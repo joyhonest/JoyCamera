@@ -254,7 +254,7 @@ public class Utility {
             contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         }
         if (isAndroidQ()) {
-            cursor = resolver.query(contentUri, new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.RELATIVE_PATH + "=?",
+            cursor = resolver.query(contentUri, new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.RELATIVE_PATH + " = ?",
                     new String[]{sAlbum_}, null);
         }
         else
@@ -464,7 +464,8 @@ public class Utility {
         {
             try {
                 int count = resolver.delete(uri, null, null);
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         else
