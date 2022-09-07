@@ -1,9 +1,12 @@
 package com.joyhonest.joycamera.sdk;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.IntentSender;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 
@@ -452,9 +455,90 @@ public class Utility {
 
 
     //删除图片或者视频，并且把它从系统图库中清除
-    public static void DeleteImage(String imgPath) {
+
+    public static void DeleteImages(String[] imgPaths, Activity activity)
+    {
         if(wifiCamera.getApplicationContext()==null)
             return;
+        if(imgPaths ==null)
+            return ;
+        if(imgPaths.length==0)
+            return;
+        List<Uri> uris = new ArrayList<>(); // 这里存放所有需要删除的图片的uri
+
+        Context mContext = wifiCamera.getApplicationContext().getApplicationContext();
+        ContentResolver resolver = mContext.getContentResolver();
+        String sPa;
+
+        if(isAndroidQ())
+        {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                {
+                    for(String sImg: imgPaths)
+                    {
+                        uris.add(Uri.parse(sImg));
+                    }
+                    PendingIntent pi = MediaStore.createDeleteRequest(resolver, uris);
+                    try {
+                        int REQUEST_CODE_DELETE_IMAGE = 202201;
+                        activity.startIntentSenderForResult(pi.getIntentSender(),REQUEST_CODE_DELETE_IMAGE, null, 0, 0, 0);
+                    } catch (IntentSender.SendIntentException e1) {
+                        e1.printStackTrace();
+                        //Log.e(TAG, "startIntentSender error:" + e.toString());
+                    }
+                }
+                else
+                {
+                    for(String str:imgPaths) {
+                        Uri uri = Uri.parse(str);
+                        try {
+                            int count = resolver.delete(uri, null, null);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        }
+        else {
+            for (String sImg : imgPaths)
+            {
+
+                Uri uri = Uri.parse(sImg);
+                final String column = "_data";
+                final String[] projection = {column};
+                try {
+                    Cursor cursor = resolver.query(uri, projection, null, null, null);
+                    if (cursor != null && cursor.moveToFirst()) {
+                        final int column_index = cursor.getColumnIndexOrThrow(column);
+                        sPa = cursor.getString(column_index);    //获取文件路径和名称
+                    if (sPa != null) {
+                        File f = new File(sPa);
+                        if (f.exists() && f.isFile()) {
+                            f.delete();
+                        }
+                    }
+                }
+            } catch (Exception ignored) {
+
+            }
+            try {
+                int count = resolver.delete(uri, null, null);
+            } catch (Exception ignored) {
+            }
+        }
+     }
+
+
+
+    }
+
+    public static void DeleteImage(String imgPath)
+    {
+        if(wifiCamera.getApplicationContext()==null)
+            return;
+
+
 
         Uri uri = Uri.parse(imgPath);
         Context mContext = wifiCamera.getApplicationContext().getApplicationContext();
@@ -466,6 +550,18 @@ public class Utility {
                 int count = resolver.delete(uri, null, null);
             } catch (Exception e) {
                 e.printStackTrace();
+//                List<Uri> uris = new ArrayList<>(); // 这里存放所有需要删除的图片的uri
+//                uris.add(uri);
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//                    PendingIntent pi = MediaStore.createDeleteRequest(resolver, uris);
+//                    try {
+//                        int REQUEST_CODE_DELETE_IMAGE = 202201;
+//                        activity.startIntentSenderForResult(pi.getIntentSender(),REQUEST_CODE_DELETE_IMAGE, null, 0, 0, 0);
+//                    } catch (IntentSender.SendIntentException e1) {
+//                        e1.printStackTrace();
+//                        //Log.e(TAG, "startIntentSender error:" + e.toString());
+//                    }
+//                }
             }
         }
         else
