@@ -86,8 +86,9 @@ dependencies {
 //4.6  修改设定灯光频率的参数错误
 //4.8  修改删除图片（权限的问题)
 //4.9  缩放是，修改缩放参数
+//5.0  添加锐化参数调整api
 
-//git commit -m "4.9" -a
+//git commit -m "5.0" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

@@ -113,6 +113,7 @@ public class wifiCamera {
 
     public static native  void naSetMirror(boolean b);
     public static native void naSet3DDenoiser(boolean b); //视频是否3D降噪
+    public static native void naSetSharpeningLevel(float n);    //n = -5 ... 5
     public static native void naSet3DDenoiserParams(float d1,float d2,float d3,float d4);
 
     public static native void naSetEnableRotate(boolean b); //视频是否可以旋转任意角度。 如果调用naEnableSensor，会从naEnableSensor 内部调用次函数
