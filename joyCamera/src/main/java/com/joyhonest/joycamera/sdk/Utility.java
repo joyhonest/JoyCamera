@@ -2,6 +2,7 @@ package com.joyhonest.joycamera.sdk;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -75,15 +76,15 @@ public class Utility {
         EventBus.getDefault().post(nKey_, "onGetKey");
     }
 
-    private static Bitmap bmp = null;
+    //private static Bitmap bmp = null;
     private static void onGetFrame(int w, int h) {
-        if (bmp == null)
-            bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        else {
-            if (bmp.getWidth() != w || bmp.getHeight() != h) {
-                bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            }
-        }
+        //if (bmp == null)
+        Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+//        else {
+//            if (bmp.getWidth() != w || bmp.getHeight() != h) {
+//                bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+//            }
+//        }
         mDirectBuffer.rewind();
         bmp.copyPixelsFromBuffer(mDirectBuffer);
         EventBus.getDefault().post(bmp, "onGetFrame");
@@ -165,12 +166,6 @@ public class Utility {
         Integer nn = (int)n;
         EventBus.getDefault().post(nn, "onPlaytime");
     }
-
-
-
-
-
-
 
     public static boolean isAndroidQ() {
         return Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q;
@@ -285,9 +280,6 @@ public class Utility {
                 stype.equalsIgnoreCase("mov")) {
             bPicture = false;
         }
-
-
-
         return F_CheckIsExit(sFullPahtName, bPicture);
 
 
@@ -472,7 +464,6 @@ public class Utility {
 
         if(isAndroidQ())
         {
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
                 {
                     for(String sImg: imgPaths)
@@ -485,7 +476,6 @@ public class Utility {
                         activity.startIntentSenderForResult(pi.getIntentSender(),REQUEST_CODE_DELETE_IMAGE, null, 0, 0, 0);
                     } catch (IntentSender.SendIntentException e1) {
                         e1.printStackTrace();
-                        //Log.e(TAG, "startIntentSender error:" + e.toString());
                     }
                 }
                 else
@@ -493,10 +483,25 @@ public class Utility {
                     for(String str:imgPaths) {
                         Uri uri = Uri.parse(str);
                         try {
+                            //android 10 ,请以兼容模式来运行，否则，删除APP再重新安装，之前的资料在这里删除会提示无权限
                             int count = resolver.delete(uri, null, null);
-                        } catch (Exception e) {
+                        }
+//                        catch (RecoverableSecurityException e)
+//                        {
+//                           这里其实如Android 11 以上那样，调用系统的弹出窗口来删除文件，但这样的话，每一个文件就要弹一次，太不人性花了。
+//                            所以建议 在Manifset 中加入  android:requestLegacyExternalStorage="true" 强制Android 10 中使用兼容模式来做
+//                            IntentSender intentSender= e.getUserAction().getActionIntent().getIntentSender();
+//                            try {
+//                                int REQUEST_CODE_DELETE_IMAGE = 202201;
+//                                activity.startIntentSenderForResult(intentSender,REQUEST_CODE_DELETE_IMAGE, null, 0, 0, 0);
+//                            } catch (IntentSender.SendIntentException e1) {
+//                                e1.printStackTrace();
+//                            }
+//                        }
+                        catch (Exception e) {
                             e.printStackTrace();
                         }
+
                     }
                 }
         }
