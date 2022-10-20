@@ -351,7 +351,8 @@ public class wifiCamera {
 
     public static native void naGetBattery();
 
-
+    public static native  void  naSetLedPWM(byte nPwm);
+    public static native  void  naGetLedPWM();
 
     public static native void naGetWifiSSID();
     public static native  void  naSetWifiSSID(String sSSid);

@@ -70,6 +70,13 @@ public class Utility {
         EventBus.getDefault().post(jh_dowload_callback, "DownloadFile");
     }
 
+    private static  void onGetLedPwm(int nPwm)// "GPSSOCKT'
+    {
+        Integer  nLed = nPwm;
+        EventBus.getDefault().post(nLed,"onGetLed");
+        EventBus.getDefault().post(nLed,"onGetLedPWM");
+    }
+
     private static void onGetKey(int nKey) {
         JoyLog.e(TAG, "Get Key = " + nKey);
         Integer nKey_ = nKey;

@@ -89,7 +89,10 @@ dependencies {
 //5.0  添加锐化参数调整api
 //5.2  修复摄像头在某些分辨率的情况下出现花屏的现象，主要是调整分辨率时，不要➕1/2*2 要 -1/2*2;
 
-//git commit -m "5.2" -a
+//5.3  添加设定获取 LEDPWM;
+
+
+//git commit -m "5.3" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
