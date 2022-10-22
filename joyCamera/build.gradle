@@ -1,18 +1,20 @@
-//plugins {
-//    id 'com.android.library'
-//}
+plugins {
+    id 'com.android.library'
+    id ("maven-publish")//this
+}
 
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.android.library'
+//apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.joyhonest'
+version = "5.4" //this
 
 
 android {
-    compileSdk 30
+    compileSdk 32
 
     defaultConfig {
         minSdk 21
-        targetSdk 30
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -54,14 +56,29 @@ android {
     }
 
 
-
+    //android库用这种
+    afterEvaluate {
+        publishing {
+            publications {
+                // 这个mavenJava可以随便填，只是一个任务名字而已
+                // MavenPublication必须有，这个是调用的任务类
+                release(MavenPublication) {
+                    from components.release
+                    // 这里头是artifacts的配置信息，不填会采用默认的
+                    groupId = 'com.github.joyhonest'
+                    artifactId = 'JoyCamera'
+                    version = '5.4'
+                }
+            }
+        }
+    }
 }
 
 
 
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     //implementation 'com.google.android.material:material:1.4.0'
 }
 //2.1
@@ -90,9 +107,10 @@ dependencies {
 //5.2  修复摄像头在某些分辨率的情况下出现花屏的现象，主要是调整分辨率时，不要➕1/2*2 要 -1/2*2;
 
 //5.3  添加设定获取 LEDPWM;
+//5.4  添加设定获取 LEDPWM;
 
 
-//git commit -m "5.3" -a
+//git commit -m "5.4" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
