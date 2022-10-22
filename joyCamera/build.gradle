@@ -1,12 +1,14 @@
-plugins {
-    id 'com.android.library'
-    id ("maven-publish")//this
-}
-
 //apply plugin: 'com.android.library'
 //apply plugin: 'com.github.dcendents.android-maven'
+
+
+plugins{
+    id 'com.android.library'
+    id ("maven-publish")
+}
+
 group='com.github.joyhonest'
-version = "5.4" //this
+version = "5.5"
 
 
 android {
@@ -55,25 +57,40 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    publishing {
+        singleVariant("release")
+    }
 
-    //android库用这种
-    afterEvaluate {
-        publishing {
-            publications {
-                // 这个mavenJava可以随便填，只是一个任务名字而已
-                // MavenPublication必须有，这个是调用的任务类
-                release(MavenPublication) {
-                    from components.release
-                    // 这里头是artifacts的配置信息，不填会采用默认的
-                    groupId = 'com.github.joyhonest'
-                    artifactId = 'JoyCamera'
-                    version = '5.4'
-                }
+
+
+}
+
+//android库用这种
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.github.joyhonest'
+                artifactId = 'JoyCamera'
+                version = '5.5'
             }
+//            // Creates a Maven publication called “debug”.
+//            debug(MavenPublication) {
+//                // Applies the component for the debug build variant.
+//                from components.debug
+//
+//                groupId = 'com.github.joyhonest'
+//                artifactId = 'JoyCamera'
+//                version = '5.5'
+//            }
         }
     }
 }
-
 
 
 
@@ -108,9 +125,9 @@ dependencies {
 
 //5.3  添加设定获取 LEDPWM;
 //5.4  添加设定获取 LEDPWM;
+//5.5  改用最新版的Gradlen
 
-
-//git commit -m "5.4" -a
+//git commit -m "5.5" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
