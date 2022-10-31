@@ -151,10 +151,6 @@ public class wifiCamera {
         if(photodest== DEST_GALLERY)
         {
             String strna = Utility.getFileNameFromDate(false);
-            if(sFileNamePre.length()>0)
-            {
-                strna = sFileNamePre+"-"+strna;
-            }
             if(sPath !=null)
             {
                 strna = sPath.substring(sPath.lastIndexOf("/") + 1);
@@ -191,10 +187,7 @@ public class wifiCamera {
         if(videodest== DEST_GALLERY)
         {
             String strna = Utility.getFileNameFromDate(true);
-            if(sFileNamePre.length()>0)
-            {
-                strna = sFileNamePre+"-"+strna;
-            }
+
             sFileName1 = strna;
 //            if(sFileName2 !=null)
 //            {

@@ -230,6 +230,10 @@ public class Utility {
         Date d = new Date();
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd-HHmmssSSS", Locale.getDefault());
         String strDate = f.format(d);
+        if(wifiCamera.sFileNamePre.length()>0 )
+        {
+            strDate = wifiCamera.sFileNamePre+"-"+strDate;
+        }
         String ext = "mp4";
         if (!bVideo) {
             ext = "jpg";

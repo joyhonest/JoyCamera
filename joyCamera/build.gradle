@@ -126,9 +126,9 @@ dependencies {
 //5.3  添加设定获取 LEDPWM;
 //5.4  添加设定获取 LEDPWM;
 //5.5  改用最新版的Gradlen
-//5.6  添加录像拍照时的文件名，可以添加一个前缀
+//5.7  添加录像拍照时的文件名，可以添加一个前缀
 
-//git commit -m "5.6" -a
+//git commit -m "5.7" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
