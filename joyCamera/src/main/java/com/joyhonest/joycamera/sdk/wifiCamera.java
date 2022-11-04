@@ -375,4 +375,5 @@ public class wifiCamera {
     public static native void naSetEV(int nEv);
     public static native void naSetLightFreq(boolean b50Hz);
 
+    public static native void naSetWorkNedId(int netID);
 }

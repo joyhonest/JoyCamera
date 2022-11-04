@@ -18,6 +18,8 @@ import android.provider.MediaStore;
 
 
 import org.simple.eventbus.EventBus;
+import org.simple.eventbus.EventType;
+import org.simple.eventbus.Subscription;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Queue;
 
 public class Utility {
 
@@ -83,15 +86,8 @@ public class Utility {
         EventBus.getDefault().post(nKey_, "onGetKey");
     }
 
-    //private static Bitmap bmp = null;
     private static void onGetFrame(int w, int h) {
-        //if (bmp == null)
         Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-//        else {
-//            if (bmp.getWidth() != w || bmp.getHeight() != h) {
-//                bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-//            }
-//        }
         mDirectBuffer.rewind();
         bmp.copyPixelsFromBuffer(mDirectBuffer);
         EventBus.getDefault().post(bmp, "onGetFrame");
