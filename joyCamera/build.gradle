@@ -129,7 +129,9 @@ dependencies {
 //5.7  添加录像拍照时的文件名，可以添加一个前缀
 //5.8  添加选择网络功能
 
-//git commit -m "5.8" -a
+//5.9  添加图片水印，文字水印等功能。
+
+//git commit -m "5.9" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

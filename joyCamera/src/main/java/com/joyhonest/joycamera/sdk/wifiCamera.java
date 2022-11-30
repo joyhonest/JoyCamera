@@ -76,6 +76,18 @@ public class wifiCamera {
      * 以下这些供用户使用
     */
 
+    //public static native  void naSetFilterNoDispScreen(boolean b); //filter 只对拍照录像有效
+
+    public static  native void naSetOsdDateType(int nDateType);
+    public static  native  void naSetOsdTextSize(int nSize);
+    public static native   void naSetOsdTextColor(int nColor);
+    public static native void naSetOsdTextOffset(int offsetX,int offsetY);
+    public static native void naSetOsdFontFilePath(String fontFilePath);
+    public static native void naSetOsdTimeEnabel(boolean b);
+    public static native  void naSetOsdFileName(boolean b);
+
+    public static native boolean naTimeWaterMarkYUV(byte []data,int nLen,int nW,int nH);
+
     public static native  boolean naIsJoyCamera();
     public static native  int naInit(String sPara);
     private static native  int naStopA();
@@ -133,6 +145,8 @@ public class wifiCamera {
 
     public static native int naSetRecordWH(int ww, int hh);
 
+    public static native int naSetPicWaterMark(String sPath,boolean b);
+
     public static native void naSetStyle(int n); //设定不同的显示效果，比如负片等。。。 0 表示原图
 
     //设定是否检测 图传协议，有些固件支持 同一个固件 用不同的图传协议
@@ -151,10 +165,15 @@ public class wifiCamera {
         if(photodest== DEST_GALLERY)
         {
             String strna = Utility.getFileNameFromDate(false);
+
             if(sPath !=null)
             {
-                strna = sPath.substring(sPath.lastIndexOf("/") + 1);
-                strna = sLocalPath+"/"+strna;
+                sPath = sPath.trim();
+                int x = sPath.lastIndexOf("/");
+                if(x>=0) {
+                    strna = sPath.substring(x + 1);
+                    strna = sLocalPath + "/" + strna;
+                }
             }
             return naSnapPhotoA(strna, nType, dest);
         }

@@ -220,6 +220,8 @@ public class Utility {
         }
     }
 
+    private static native void _naSetFileName(String strname);
+
     public static String getFileNameFromDate(boolean bVideo) {
         if(wifiCamera.sLocalPath==null)
             return null;
@@ -230,10 +232,12 @@ public class Utility {
         {
             strDate = wifiCamera.sFileNamePre+"-"+strDate;
         }
+
         String ext = "mp4";
         if (!bVideo) {
             ext = "jpg";
         }
+        _naSetFileName(strDate + "." + ext);
         String recDir = wifiCamera.sLocalPath;
         File dirPath = new File(recDir);
         if (!dirPath.exists()) {
