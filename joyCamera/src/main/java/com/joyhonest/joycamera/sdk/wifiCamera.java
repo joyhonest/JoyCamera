@@ -78,7 +78,7 @@ public class wifiCamera {
 
     //public static native  void naSetFilterNoDispScreen(boolean b); //filter 只对拍照录像有效
 
-    public static  native void naSetOsdDateType(int nDateType);
+
     public static  native  void naSetOsdTextSize(int nSize);
     public static native   void naSetOsdTextColor(int nColor);
     public static native void naSetOsdTextOffset(int offsetX,int offsetY);
@@ -385,7 +385,7 @@ public class wifiCamera {
     public static native int naEliminateBlackBorder(int x1,int y1,int x2,int y2); //截去黑边
 
 
-    public static native void naSetTimeOsd(int x,int y,int nDateType); //x设置足够大就会不显示
+    public static native void naSetTimeOsd(int nPos,int nDateType); //x设置足够大就会不显示
 
 
     //读取摄像头参数设定
