@@ -324,6 +324,10 @@ class JoyAudioRecord {
     }
 
     private static void Addtrack(MediaFormat format, boolean bVideo) {
+        if(mediaMuxer==null)
+            return;
+        if(format == null)
+            return;
         if (bVideo) {
             if (vIndex < 0) {
                 vIndex = mediaMuxer.addTrack(format);
@@ -372,6 +376,10 @@ class JoyAudioRecord {
             return;
         int inputBufferIndex = videoMediaCode.dequeueInputBuffer(5000);
         if (inputBufferIndex >= 0) {//当输入缓冲区有效时,就是>=0
+            if(fps<=0)
+            {
+                fps = 25;
+            }
             pts_ = (pts * (1000000 / fps));
             pts++;
             ByteBuffer inputBuffer = videoMediaCode.getInputBuffer(inputBufferIndex);
@@ -524,7 +532,7 @@ class JoyAudioRecord {
         return 0;
     }
 
-    public static void VidoeDataEncoderA(byte[] data) {
+    /*public static void VidoeDataEncoderA(byte[] data) {
         if (videoMediaCode == null) {
             return;
         }
@@ -565,6 +573,8 @@ class JoyAudioRecord {
             }
         }
     }
+    */
+
 
     public static int  Init_MediaConvert(int width, int height, int bitrate, int fps1)
     {
