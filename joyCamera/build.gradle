@@ -133,8 +133,9 @@ dependencies {
 //6.5  优化图片水印，文字水印等功能。
 //6.6  修正缩放显示时的内存泄露
 //6.7  修复一些小bug
+//6.8  修复一些图片水印的显示
 
-//git commit -m "6.7" -a
+//git commit -m "6.8" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
