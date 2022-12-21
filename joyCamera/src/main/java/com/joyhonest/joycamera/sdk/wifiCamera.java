@@ -71,6 +71,7 @@ public class wifiCamera {
     public static native void eglrelease();
     public static native void eglchangeLayout(int width, int height);
     public static native void egldrawFrame();
+    public static native void naSetTypeInspectis(boolean b);
 
     /*
      * 以下这些供用户使用
