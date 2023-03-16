@@ -11,6 +11,9 @@ import android.content.IntentSender;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -566,18 +569,6 @@ public class Utility {
                 int count = resolver.delete(uri, null, null);
             } catch (Exception e) {
                 e.printStackTrace();
-//                List<Uri> uris = new ArrayList<>(); // 这里存放所有需要删除的图片的uri
-//                uris.add(uri);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//                    PendingIntent pi = MediaStore.createDeleteRequest(resolver, uris);
-//                    try {
-//                        int REQUEST_CODE_DELETE_IMAGE = 202201;
-//                        activity.startIntentSenderForResult(pi.getIntentSender(),REQUEST_CODE_DELETE_IMAGE, null, 0, 0, 0);
-//                    } catch (IntentSender.SendIntentException e1) {
-//                        e1.printStackTrace();
-//                        //Log.e(TAG, "startIntentSender error:" + e.toString());
-//                    }
-//                }
             }
         }
         else
@@ -602,6 +593,68 @@ public class Utility {
             try {
                 int count = resolver.delete(uri, null, null);
             } catch (Exception ignored) {
+            }
+        }
+    }
+
+    //2023-02-08 添加实时播放PCM
+    private static AudioTrack audioTrack = null;
+    // audioFormat  AudioFormat.ENCODING_PCM_16BIT or  AudioFormat..ENCODING_PCM_8BIT
+    //  nFreq = 8000,.....
+    public static  void F_StartPlayAudio(int nFreq,int audioFormat)
+    {
+        if(audioTrack!=null)
+        {
+            try {
+                audioTrack.stop();
+                audioTrack.release();
+                audioTrack = null;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        //int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
+        int channelConfig = AudioFormat.CHANNEL_OUT_STEREO;
+        int mMinBufSize = AudioTrack.getMinBufferSize(nFreq, channelConfig, audioFormat);
+        try {
+            audioTrack = new AudioTrack(AudioManager.USE_DEFAULT_STREAM_TYPE, nFreq, channelConfig,
+                    audioFormat, mMinBufSize, AudioTrack.MODE_STREAM);
+            audioTrack.play();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void F_StopPlayAudio()
+    {
+        if(audioTrack!=null)
+        {
+            try {
+                audioTrack.stop();
+                audioTrack.release();
+                audioTrack = null;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void WriteAudioData(byte[] data)
+    {
+        if(audioTrack!=null)
+        {
+            try {
+                audioTrack.write(data,0,data.length);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
         }
     }

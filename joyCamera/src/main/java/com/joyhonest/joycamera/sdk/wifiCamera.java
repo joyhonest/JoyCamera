@@ -3,6 +3,9 @@ package com.joyhonest.joycamera.sdk;
 import android.content.Context;
 
 import android.graphics.Bitmap;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
 
 
 import java.io.File;
@@ -94,6 +97,8 @@ public class wifiCamera {
     private static native  int naStopA();
     public static  int naStop()
     {
+        StopPlayAudioNative();
+        Utility.F_StopPlayAudio();
         naStopRecordAll();
         naStopA();
 
@@ -275,6 +280,7 @@ public class wifiCamera {
         nType = 3'  相片
         nType = 4'  锁定相片
  */
+    //获取SD文件目录中的文件信息
     public static native int naGetSdFliesList(int nFileType,int nStartInx,int nCount);
     //下载文件
     public static native int naStartDownLoad(String sFileName,int nLen,String sSaveName);
@@ -394,6 +400,22 @@ public class wifiCamera {
     public static native void naGetCameraPara();
     public static native void naSetEV(int nEv);
     public static native void naSetLightFreq(boolean b50Hz);
-
     public static native void naSetWorkNedId(int netID);
+
+    // audioFormat  AudioFormat.ENCODING_PCM_16BIT or  AudioFormat..ENCODING_PCM_8BIT
+    //  nFreq = 8000,.....
+    private static native  boolean StartPlayAudioNative();
+    private static native  void StopPlayAudioNative();
+    //audioFormat  AudioFormat.ENCODING_PCM_16BIT or  AudioFormat..ENCODING_PCM_8BIT
+    //nFreq = 8000,.....
+    public static void naStartPlayAudio(int nFreq,int audioFormat)
+    {
+        Utility.F_StartPlayAudio(nFreq,audioFormat);
+        StartPlayAudioNative();
+    }
+    public static void naStopPlayAudio()
+    {
+        StopPlayAudioNative();
+        Utility.F_StopPlayAudio();
+    }
 }
