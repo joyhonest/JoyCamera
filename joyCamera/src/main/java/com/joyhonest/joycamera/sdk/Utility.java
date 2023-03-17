@@ -111,7 +111,17 @@ public class Utility {
         }
         if(nPort == 20000)
         {
-            EventBus.getDefault().post(data,"onGet20000PortData");
+
+            if(bJavaUdp)
+            {
+                EventBus.getDefault().post(data,"onGet20000PortData");
+            }
+            else {
+                if (!GP4225_Device.GP4225_PressData_20000(data)) {
+                    EventBus.getDefault().post(data, "onGet20000PortData");
+                }
+            }
+
         }
     }
 

@@ -376,4 +376,28 @@ class JoyProcessData {
         }
         return false;
     }
+
+    public static boolean PressData_20000(byte[] data)
+    {
+        if(data == null)
+            return true;
+        if(data.length<3)
+            return true;
+        int nCmdType = (data[0] & 0xFF) | (data[1] & 0xFF)*0x100;
+        int nLen = data[2] & 0xFF;
+        switch (nCmdType)
+        {
+            case 0x0020:
+                if(nLen>=33)
+                {
+                    Integer nVer =  data[3+32]&0xff | (data[3+33]&0xff)*0x100;
+                    EventBus.getDefault().post(nVer,"onGetFirewareVerB");
+                }
+                break;
+
+        }
+
+
+        return true;
+    }
 }

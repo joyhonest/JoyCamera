@@ -34,6 +34,10 @@ public class GP4225_Device {
     {
         return JoyProcessData.PressData(data);
     }
+    static boolean GP4225_PressData_20000(byte[] data)
+    {
+        return  JoyProcessData.PressData_20000(data);
+    }
     static int StartRecord(String pFileName, int nType, int dest, boolean bRecordAudio)
     {
         return  JoyAudioRecord.StartRecord(pFileName,nType,dest,bRecordAudio);
