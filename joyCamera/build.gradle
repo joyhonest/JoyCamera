@@ -139,8 +139,9 @@ dependencies {
 //7.1  修复一些图片水印的显示
 //7.2  修复一些图片水印的显示
 //7.3  修复一些图片水印的显示
+//7.4  修复一些图片水印的显示
 
-//git commit -m "7.3" -a
+//git commit -m "7.4" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
