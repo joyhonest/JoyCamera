@@ -359,6 +359,25 @@ class JoyProcessData {
                     EventBus.getDefault().post(da, "onGetCameraPara");
                 }
                     break;
+                case 0x002C: //PCM  实时传输 信息，是否支持等
+                {
+//                    AUDIO_EN 传输控制    1开始传输 0停止传输
+//                    AUDIO_STATUS 传输状态   0:声音未开启， 1:声音已开启 2:不支持声音传输功能
+//                    AUDIO_ENCODE         Bit0~3= 0:16bit PCM， 1:8bit alaw Bit4~7= 0: 8K, 1:16K, 2:44.1K,3:32K
+
+                    byte []da = new byte[n_len];
+                    System.arraycopy(data, 10, da, 0, n_len);
+                    EventBus.getDefault().post(da, "onGetPcmInfo");
+                }
+                break;
+
+                case 0x002D:
+                {
+                    byte []da = new byte[n_len];
+                    System.arraycopy(data, 10, da, 0, n_len);
+                    EventBus.getDefault().post(da, "onGetDeviceCategory");
+                }
+                break;
 
 
                 case 0x0050: {
