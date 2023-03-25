@@ -143,8 +143,9 @@ dependencies {
 //7.5  修复通过20000端口读取固件版本。
 //7.6  调整旋转时，把旋转放在处理的最前面
 //7.7   添加naGetDeviceCategory
+//7.8   修复一些图片水印的显示
 
-//git commit -m "7.7" -a
+//git commit -m "7.8" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
