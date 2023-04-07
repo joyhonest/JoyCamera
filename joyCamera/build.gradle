@@ -145,8 +145,9 @@ dependencies {
 //7.7   添加naGetDeviceCategory
 //7.8   修复一些图片水印的显示
 //7.9   修复一些图片水印的显示
+//8.0   socket添加了 so_reuseaddr 等选项
 
-//git commit -m "7.9" -a
+//git commit -m "8.0" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

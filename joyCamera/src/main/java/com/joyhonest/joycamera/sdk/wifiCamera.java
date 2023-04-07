@@ -93,7 +93,11 @@ public class wifiCamera {
     public static native boolean naTimeWaterMarkYUV(byte []data,int nLen,int nW,int nH);
 
     public static native  boolean naIsJoyCamera();
-    public static native  int naInit(String sPara);
+    public static   int naInit(String sPara)
+    {
+        return naInitA(sPara);
+    }
+    private static native  int naInitA(String sPara);
     private static native  int naStopA();
     public static  int naStop()
     {
@@ -101,7 +105,6 @@ public class wifiCamera {
         Utility.F_StopPlayAudio();
         naStopRecordAll();
         naStopA();
-
         return 0;
     }
 
