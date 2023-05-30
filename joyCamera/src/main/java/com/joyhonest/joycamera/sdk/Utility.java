@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -42,9 +43,7 @@ public class Utility {
     static ByteBuffer mDirectBuffer;
     static ByteBuffer mDirectUsbCameraYuvBuffer;
     static boolean  bJavaUdp=false;
-
-
-
+    public static String  sCameraModel = "";
 
     private static int InitVideoMediacode(int width, int height, int bitrate, int fps1)
     {
@@ -89,10 +88,18 @@ public class Utility {
         EventBus.getDefault().post(nKey_, "onGetKey");
     }
 
+
+
+
+
+
+
     private static void onGetFrame(int w, int h) {
         Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mDirectBuffer.rewind();
         bmp.copyPixelsFromBuffer(mDirectBuffer);
+
+
         EventBus.getDefault().post(bmp, "onGetFrame");
     }
 
@@ -132,6 +139,25 @@ public class Utility {
             String Sn = String.format(Locale.ENGLISH,"%02d%s", nPhoto, sName);
             if(nPhoto == 0)
             {
+                if(sCameraModel.length()>2)
+                {
+                    //File file1 = new File(sName);
+                    try {
+                        //FileInputStream fileInputStream = new FileInputStream(file1);
+                        //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
+                        {
+                            ExifInterface exifInterface = null;
+                            exifInterface = new ExifInterface(sName);
+                            exifInterface.setAttribute(ExifInterface.TAG_MODEL,sCameraModel);
+                            exifInterface.saveAttributes();
+                        }
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
                 if(wifiCamera.photodest == wifiCamera.DEST_GALLERY ) {
                     F_Save2ToGallery(sName);
                     wifiCamera.photodest=-1;

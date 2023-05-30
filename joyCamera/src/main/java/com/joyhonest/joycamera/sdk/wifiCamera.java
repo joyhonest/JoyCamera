@@ -430,4 +430,10 @@ public class wifiCamera {
 
     public static native  void naGetDeviceCategory(); //获取设备分类。  2023-03-24 添加
 
+
+    public static void naSetCameraModel2SnapPhoto(String sModel)
+    {
+        Utility.sCameraModel = sModel;
+    }
+
 }
