@@ -147,8 +147,9 @@ dependencies {
 //7.9   修复一些图片水印的显示
 //8.0   socket添加了 so_reuseaddr 等选项
 //8.1   添加了拍照时，添加Exif -- Camera model
+//8.2   添加了 naSetReadStatusDelay
 
-//git commit -m "8.1" -a
+//git commit -m "8.2" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

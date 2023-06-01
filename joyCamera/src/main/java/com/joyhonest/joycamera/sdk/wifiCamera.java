@@ -436,4 +436,9 @@ public class wifiCamera {
         Utility.sCameraModel = sModel;
     }
 
+
+    //2023-06-01
+    // nMS
+    public static native void naSetReadStatusDelay(int nMS);
+
 }
