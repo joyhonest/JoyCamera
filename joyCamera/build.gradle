@@ -148,8 +148,9 @@ dependencies {
 //8.0   socket添加了 so_reuseaddr 等选项
 //8.1   添加了拍照时，添加Exif -- Camera model
 //8.2   添加了 naSetReadStatusDelay
+//8.3   添加了 naSetSystemControlData
 
-//git commit -m "8.2" -a
+//git commit -m "8.3" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

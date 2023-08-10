@@ -379,6 +379,14 @@ class JoyProcessData {
                 }
                 break;
 
+                case 0x002E:
+                {
+                    byte []da = new byte[n_len];
+                    System.arraycopy(data, 10, da, 0, n_len);
+                    EventBus.getDefault().post(da, "GetSystemControlData");
+                }
+                break;
+
 
                 case 0x0050: {
                     byte[] aa;

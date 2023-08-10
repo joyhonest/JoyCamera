@@ -8,6 +8,8 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 
 
+import org.simple.eventbus.EventBus;
+
 import java.io.File;
 
 import java.nio.ByteBuffer;
@@ -90,6 +92,17 @@ public class wifiCamera {
     public static native void naSetOsdTimeEnabel(boolean b);
     public static native  void naSetOsdFileName(boolean b);
 
+    public static native void naSetTimeOsd(int nPos,int nDateType);
+    /*nPos
+        <0 no disp
+        0 up-left
+        1 up-right
+        2 bottom-left
+        3 bottom-right
+      */
+
+    //nDateType 0  Y-M-D  1 M-D-Y  2 = D-M-Y
+
     public static native boolean naTimeWaterMarkYUV(byte []data,int nLen,int nW,int nH);
 
     public static native  boolean naIsJoyCamera();
@@ -101,6 +114,7 @@ public class wifiCamera {
     private static native  int naStopA();
     public static  int naStop()
     {
+
         StopPlayAudioNative();
         Utility.F_StopPlayAudio();
         naStopRecordAll();
@@ -400,7 +414,7 @@ public class wifiCamera {
     public static native int naEliminateBlackBorder(int x1,int y1,int x2,int y2); //截去黑边
 
 
-    public static native void naSetTimeOsd(int nPos,int nDateType); //x设置足够大就会不显示
+
 
 
     //读取摄像头参数设定
@@ -430,7 +444,7 @@ public class wifiCamera {
 
     public static native  void naGetDeviceCategory(); //获取设备分类。  2023-03-24 添加
 
-
+    //添加 exif  相机名称
     public static void naSetCameraModel2SnapPhoto(String sModel)
     {
         Utility.sCameraModel = sModel;
@@ -440,5 +454,11 @@ public class wifiCamera {
     //2023-06-01
     // nMS
     public static native void naSetReadStatusDelay(int nMS);
+
+
+    //
+    public static native void  naSetSystemControlData(byte []data);
+    //设定 比如 自动关机时间参数。。。。。
+    public static native void  naGetSystemControlData();
 
 }

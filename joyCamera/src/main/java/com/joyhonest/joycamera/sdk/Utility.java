@@ -93,14 +93,16 @@ public class Utility {
 
 
 
+    private static Bitmap bmpG = null;
+    private static Bitmap bmpPre = null;
 
     private static void onGetFrame(int w, int h) {
         Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mDirectBuffer.rewind();
         bmp.copyPixelsFromBuffer(mDirectBuffer);
-
-
         EventBus.getDefault().post(bmp, "onGetFrame");
+
+
     }
 
     // 读取 20000 或者 20001端口，如果SDK内部没有处理，就通过这里返回来处理
@@ -308,7 +310,7 @@ public class Utility {
         else
         {
             cursor = resolver.query(contentUri, new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + " like ?",
-                    new String[]{s2 + "/%"}, null);
+                    new String[]{"%"+s2 + "/%"}, null);
         }
         if (cursor != null) {
             while (cursor.moveToNext()) {
