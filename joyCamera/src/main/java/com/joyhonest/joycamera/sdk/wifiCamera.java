@@ -461,4 +461,16 @@ public class wifiCamera {
     //设定 比如 自动关机时间参数。。。。。
     public static native void  naGetSystemControlData();
 
+
+    //2023-08-18
+
+
+    // 0 - VGA 1 720p  2 = 1080P
+    //设定图传分辨率
+    public static native void naSetWifiResolution(int n);
+    //通过 GP4225_GetResolution 消息返回
+    //图传分辨率
+    //public static native void naGetWifiResolution();
+    public  static  native void naGetWifiResolution();
+
 }
