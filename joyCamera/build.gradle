@@ -150,9 +150,9 @@ dependencies {
 //8.2   添加了 naSetReadStatusDelay
 //8.4   添加了 naSetSystemControlData
 //8.5  添加了 naSetWifiResolution
+//8.6  修复  naSetWifiResolution 修改设备的分辨率后，再设定 录像的分辨率有可能花屏的问题。
 
-
-//git commit -m "8.5" -a
+//git commit -m "8.6" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
