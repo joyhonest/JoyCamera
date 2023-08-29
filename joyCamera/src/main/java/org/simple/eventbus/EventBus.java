@@ -399,11 +399,11 @@ public final class EventBus {
             for (Subscription subscription : subscriptions) {
                 final ThreadMode mode = subscription.threadMode;
                 EventHandler eventHandler = getEventHandler(mode);
-                //在这个项目中，如果是接收图片事件，就直接处理，不异步处理，主要处理需要快速。
-                if(eventType.tag.equalsIgnoreCase("onGetFrame"))
-                {
-                    eventHandler = mPostThreadHandler;
-                }
+//                //在这个项目中，如果是接收图片事件，就直接处理，不异步处理，主要处理需要快速。
+//                if(eventType.tag.equalsIgnoreCase("onGetFrame"))
+//                {
+//                    eventHandler = mPostThreadHandler;
+//                }
                 // 处理事件
                 eventHandler.handleEvent(subscription, aEvent);
             }
