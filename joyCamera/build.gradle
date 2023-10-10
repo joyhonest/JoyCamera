@@ -17,8 +17,6 @@ android {
     defaultConfig {
         minSdk 21
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -152,9 +150,9 @@ dependencies {
 //8.5  添加了 naSetWifiResolution
 //8.6  修复  naSetWifiResolution 修改设备的分辨率后，再设定 录像的分辨率有可能花屏的问题。
 //8.7   更改EventBus
+//8.8   添加naGetBatteyInfo
 
-
-//git commit -m "8.7" -a
+//git commit -m "8.8" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

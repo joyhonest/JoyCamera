@@ -400,6 +400,7 @@ public class wifiCamera {
 
 
     public static native void naGetBattery();
+    public static native void naGetBatteryInfo();//获取更详细的电池信息，比如是否在充电以及电池百分比，这个需要有些固件可能不支持 2023-1010
 
     public static native  void  naSetLedPWM(byte nPwm);
     public static native  void  naGetLedPWM();
