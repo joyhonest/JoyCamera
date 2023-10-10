@@ -58,7 +58,8 @@ android {
     publishing {
         singleVariant("release")
     }
-
+    buildToolsVersion '31.0.0'
+    namespace 'com.joyhonest.joycamera.sdk'
 
 
 }
@@ -150,9 +151,9 @@ dependencies {
 //8.5  添加了 naSetWifiResolution
 //8.6  修复  naSetWifiResolution 修改设备的分辨率后，再设定 录像的分辨率有可能花屏的问题。
 //8.7   更改EventBus
-//8.8   添加naGetBatteyInfo
+//8.9   添加naGetBatteyInfo
 
-//git commit -m "8.8" -a
+//git commit -m "8.9" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
