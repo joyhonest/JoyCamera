@@ -590,12 +590,11 @@ public class Utility {
 
     }
 
-    public static void DeleteImage(String imgPath)
+    public static int DeleteImage(String imgPath)
     {
+        int re = -1;
         if(wifiCamera.getApplicationContext()==null)
-            return;
-
-
+            return re;
 
         Uri uri = Uri.parse(imgPath);
         Context mContext = wifiCamera.getApplicationContext().getApplicationContext();
@@ -605,12 +604,17 @@ public class Utility {
         {
             try {
                 int count = resolver.delete(uri, null, null);
+                re = 0;
             } catch (Exception e) {
                 e.printStackTrace();
+                re = -1;
             }
+            return re;
         }
         else
         {
+            boolean re1=false;
+            boolean re2 = false;
             final String column = "_data";
             final String[] projection = {column};
             try {
@@ -625,13 +629,18 @@ public class Utility {
                         }
                     }
                 }
+                re1 = true;
             } catch (Exception ignored) {
 
             }
             try {
                 int count = resolver.delete(uri, null, null);
+                re2 = true;
             } catch (Exception ignored) {
             }
+            if(re1 && re2)
+                re = 0;
+            return re;
         }
     }
 

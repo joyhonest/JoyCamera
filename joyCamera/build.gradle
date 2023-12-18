@@ -152,8 +152,9 @@ dependencies {
 //8.6  修复  naSetWifiResolution 修改设备的分辨率后，再设定 录像的分辨率有可能花屏的问题。
 //8.7   更改EventBus
 //8.9   添加naGetBatteyInfo
+//9.0   修复一下小bug
 
-//git commit -m "8.9" -a
+//git commit -m "9.0" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag

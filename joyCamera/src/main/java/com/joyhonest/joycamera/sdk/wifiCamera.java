@@ -108,13 +108,13 @@ public class wifiCamera {
     public static native  boolean naIsJoyCamera();
     public static   int naInit(String sPara)
     {
+        naStop();
         return naInitA(sPara);
     }
     private static native  int naInitA(String sPara);
     private static native  int naStopA();
     public static  int naStop()
     {
-
         StopPlayAudioNative();
         Utility.F_StopPlayAudio();
         naStopRecordAll();
