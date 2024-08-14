@@ -276,6 +276,14 @@ class JoyProcessData {
 //                }
 //                break;
 
+                case 0x0012:
+                {
+                    byte[] da = new byte[n_len];
+                    System.arraycopy(data, 10, da, 0, n_len);
+                    EventBus.getDefault().post(da, "onGetSensorData");
+                }
+                break;
+
                 case 0x0013:    //AC检测 数据
                 {
                     //byte a = data[10];
