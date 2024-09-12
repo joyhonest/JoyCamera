@@ -168,7 +168,7 @@ public class wifiCamera {
 
     public static native int naSetRecordWH(int ww, int hh);
 
-    public static native int naSetPicWaterMark(String sPath,boolean b);
+    public static native int naSetPicWaterMark(String sPath,boolean b); //设定水印贴图
 
     public static native void naSetStyle(int n); //设定不同的显示效果，比如负片等。。。 0 表示原图
 
@@ -475,6 +475,11 @@ public class wifiCamera {
     public  static  native void naGetWifiResolution();
 
 
-    public static native void naSetSensorSensitivity(int n); //0 = 失效 n =1 low; n = 2 med;n = 3 hight  //2024-08-14 新版本的设定函数，小邱项目需要用旧版的，在另外一个SDK
+    public static native void naSetSensorSensitivity(int n,int n2); //0 = 失效 n =1 low; n = 2 med;n = 3 hight
+    // 2024-08-14 新版本的设定函数，小邱项目需要用旧版的，在另外一个SDK
+    // 2024-08-30 新版本的设定函数，添加测试用调整灵敏度设定。（N2）
     public static native int naGetSensorSensitivity();
+
+
+
 }
