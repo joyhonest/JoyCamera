@@ -85,11 +85,16 @@ public class wifiCamera {
     //public static native  void naSetFilterNoDispScreen(boolean b); //filter 只对拍照录像有效
 
 
+
+    //public static native int naSetPicWaterMark(String sPath,boolean b); //设定水印贴图
+    //para1 占图片的宽度， para1， 图片的高宽比
+    public static native int naSetPicWaterMark(String sPath,boolean b,float para1,float para2);
+
+
     public static  native  void naSetOsdTextSize(int nSize);
-    public static native   void naSetOsdTextColor(int nColor);
+    public static native   void naSetOsdTextColor(int nColor,int nShadowcolor);
     public static native void naSetOsdTextOffset(int offsetX,int offsetY);
     public static native void naSetOsdFontFilePath(String fontFilePath);
-    public static native void naSetOsdTimeEnabel(boolean b);
     public static native  void naSetOsdFileName(boolean b);
 
     public static native void naSetTimeOsd(int nPos,int nDateType);
@@ -168,7 +173,7 @@ public class wifiCamera {
 
     public static native int naSetRecordWH(int ww, int hh);
 
-    public static native int naSetPicWaterMark(String sPath,boolean b); //设定水印贴图
+
 
     public static native void naSetStyle(int n); //设定不同的显示效果，比如负片等。。。 0 表示原图
 
@@ -383,7 +388,7 @@ public class wifiCamera {
     //变焦
     public static native int naSetZoomFocus(int nLevel);
     public static native int naGetZoomeFocus();
-    public static native int naStartAutoFocus(boolean bStart);
+
 
     public  static native void naStartAdjFocus(int x,int y);
 
@@ -450,6 +455,7 @@ public class wifiCamera {
     {
         Utility.sCameraModel = sModel;
     }
+
 
 
     //2023-06-01

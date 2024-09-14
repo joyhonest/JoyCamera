@@ -82,6 +82,11 @@ public class Utility {
         EventBus.getDefault().post(nLed,"onGetLedPWM");
     }
 
+    private  static  void  onAdjFocus(int n)
+    {
+        Integer  data = n;
+        EventBus.getDefault().post(data,"onAdjFocus");
+    }
     private static void onGetKey(int nKey) {
         JoyLog.e(TAG, "Get Key = " + nKey);
         Integer nKey_ = nKey;
