@@ -270,12 +270,6 @@ class JoyProcessData {
                     EventBus.getDefault().post(aa, "GP4225_GetResolution");
                 }
                 break;
-//                case 0x0012:    //G-Sensor 数据
-//                {
-//                     在native 里面处理
-//                }
-//                break;
-
                 case 0x0012:
                 {
                     byte[] da = new byte[n_len];
