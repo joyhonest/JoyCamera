@@ -158,8 +158,9 @@ dependencies {
 //9.3   添加sensor 灵敏度设定
 //9.4   修改H264 解码后显示的流程，更快觉得显示。
 //9.6   修改H264 解码后显示的流程，更快觉得显示。
+//9.61   修改H264 解码后显示的流程，更快觉得显示。
 
-//git commit -m "9.6" -a
+//git commit -m "9.61" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
