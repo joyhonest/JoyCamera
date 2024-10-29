@@ -160,8 +160,9 @@ dependencies {
 //9.6   修改H264 解码后显示的流程，更快觉得显示。
 //9.61   修改H264 解码后显示的流程，更快觉得显示。
 //9.62   修改一些界面流程，自动对焦会更准确
+//9.63   修改一些界面流程，自动对焦会更准确
 
-//git commit -m "9.62" -a
+//git commit -m "9.63" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
