@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.joyhonest.joycamera_sdk"
         minSdk 21
-        targetSdk 31
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
