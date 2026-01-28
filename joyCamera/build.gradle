@@ -162,9 +162,9 @@ dependencies {
 //9.62   修改一些界面流程，自动对焦会更准确
 //9.63   修改一些界面流程，自动对焦会更准确
 //9.66   修改为最新SDK， 。so改为 16K对齐优化
-//9.67   so改为16K 对齐
+//9.68   so改为16K 对齐
 
-//git commit -m "9.67" -a
+//git commit -m "9.68" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
