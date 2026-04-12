@@ -163,8 +163,9 @@ dependencies {
 //9.63   修改一些界面流程，自动对焦会更准确
 //9.66   修改为最新SDK， 。so改为 16K对齐优化
 //9.70   so改为16K 对齐
+//9.71   //移除 <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> 等，因为 googlePlay 现在一般不运行这些。有应用曾去决定是否添加
 
-//git commit -m "9.70" -a
+//git commit -m "9.71" -a
 //git push -u origin main
 //git push origin --delete <tagname>
 //删除远端tag
